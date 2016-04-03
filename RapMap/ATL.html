@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)http://localhost/Bootstrap/bootstrap-3.3.6/docs/examples/carousel/# -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>ATL</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./Library_files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="./Library_files/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="./Library_files/ie-emulation-modes-warning.js"></script><script type="text/javascript">try {
+window.AG_onLoad = function(func) { if (window.addEventListener) { window.addEventListener('DOMContentLoaded', func); } };
+window.AG_removeElementById = function(id) { var element = document.getElementById(id); if (element && element.parentNode) { element.parentNode.removeChild(element); }};
+window.AG_removeElementBySelector = function(selector) { if (!document.querySelectorAll) { return; } var nodes = document.querySelectorAll(selector); if (nodes) { for (var i = 0; i < nodes.length; i++) { if (nodes[i] && nodes[i].parentNode) { nodes[i].parentNode.removeChild(nodes[i]); } } } };
+window.AG_each = function(selector, fn) { if (!document.querySelectorAll) return; var elements = document.querySelectorAll(selector); for (var i = 0; i < elements.length; i++) { fn(elements[i]); }; };
+var AG_removeParent = function(el, fn) { while (el && el.parentNode) { if (fn(el)) { el.parentNode.removeChild(el); return; } el = el.parentNode; } };
+} catch (ex) { console.error('Error executing AG js: ' + ex); }</script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="./Library_files/carousel.css" rel="stylesheet">
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">ATL Hip Hop</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+              <ul class="nav navbar-nav">
+                <li><a href="./NYC.html">NYC</a></li>
+                <li><a href="LAX.html">LAX</a></li>
+                <li class="active"><a href="#">ATL</a></li>
+                <li><a href="./CHI.html">CHI</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+
+
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="2" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="3" class=""></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item">
+          <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>NYC Hip Hop</h1>
+              <p>Who Shot Ya?</p>
+              <p><a class="btn btn-lg btn-primary" href="./NYC.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>LAX Hip Hop</h1>
+              <p>Express Yourself</p>
+              <p><a class="btn btn-lg btn-primary" href="./LAX.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item active">
+          <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>ATL Hip Hop</h1>
+              <p>So Fresh, So Clean</p>
+              <p><a class="btn btn-lg btn-primary" href="./ATL.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="fourth-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>CHI Hip Hop</h1>
+              <p>Jesus Walks</p>
+              <p><a class="btn btn-lg btn-primary" href="./CHI.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="./#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="./#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+      
+      <h2 class="featurette-heading" style=""><center>LEGENDS</center></h2><br>
+
+      <!-- Three columns of text below the carousel -->
+      <!-- A. Legends -->
+      <div class="row">
+        <!-- Outkast -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="http://assets.rollingstone.com/assets/images/list/20121204-outkast1-x306-1354658889.jpg" alt="Generic placeholder image" width="140" height="140">
+          <h2>Outkast</h2>
+          <p>Georgia natives Andre “Andre 3000” Benjamin and Antwan “Big Boi” Patton are OutKast, one of the most successful rap groups of all time. Helped by production from the influential collective Organized Noize, Benjamin and Patton popularized and expanded what “Southern rap” sounds like.
+
+          Benjamin, the spacey, vegan fashion plate, and Patton, the pimp-alicious gangster, have shown off their chemistry on many successful albums.</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/outkast" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+
+        <!-- TI -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="https://images.rapgenius.com/b6da28108a0c74c5dafacc1899ba048a.491x498x1.png" width="140" height="140">
+          <h2>T.I.</h2>
+          <p>Clifford Harris, Jr., better known as T.I., is a rapper, film & music producer, actor and author. He is also the founder and CEO of Grand Hustle Records.
+
+          T.I. has released eight studio albums and has had a successful acting career, starring in the films Takers and ATL.
+
+          He is a Southern legend, notably for his 2003 classic “Trap Muzik”, which is often recognized as the first musical use of the word Trap.</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/ti" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+        
+        <!-- Killer Mike -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="https://s3.amazonaws.com/hiphopdx-production/2014/12/Killer-Mike_12-03-2014-300x300.jpg" width="140" height="140">
+          <h2>Killer Mike</h2>
+          <p>Michael Render, better known by his stage name Killer Mike, is a rapper, signed to Grind Time Official through the SMC/Fontana Distribution. He made his debut on “Snappin' and Trappin'” on OutKast’s 2000 LP Stankonia, and also appeared on the Grammy-winning song, “The Whole World”, the single from OutKast’s greatest hits album Big Boi and Dre Present…OutKast. He was featured in the movies 20 Funerals, Idlewild, and ATL.</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/killer-mike" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+      
+      <hr class="featurette-divider">
+
+      <!-- B.Currents -->
+      <div class="row">
+        <div class="col-lg-4  col-lg-push-2">
+          <h2><center>ON FIRE</center></h2><br>
+          <img class="img-circle" src="http://cdn3.pitchfork.com/tracks/17546/homepage_large.121d6621.jpg" width="140" height="140">
+          <h2>Future</h2>
+          <p>Nayvadius Cash (born Nayvadius Jean-Louis on November 20, 1983), better known by his stage name Future, is an American rapper (with a common rapport among the Haitian-American community) and singer from Kirkwood, Atlanta, Georgia. He is signed to the record label Epic Records. He is a cousin of fellow Atlanta rapper Rocko and is cousins with Rico Wade and an associate of the Dungeon Family.</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/future" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 col-lg-push-2">
+          <h2><center>COME UP</center></h2><br>
+          <img class="img-circle" src="http://assets.audiomack.com/dj-arabmixtapes/542d04fcddd2050569734c46f8eba0ed.jpeg" width="140" height="140">
+          <h2>Young Thug</h2>
+          <p>"Grady Memorial Hospital in Atlanta, Georgia is the largest birth center in Georgia. Ushering in nearly 40,000 lives a year the odds are nearly impossible to beat. Young Thug was born amongst the masses eliminating any doubt that he wouldn’t be special. The second youngest child of 11 children developed a skill for standing out amongst many, early."</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/young-thug" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->  
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider">
+
+      <h2 class="featurette-heading" style=""><center>ALBUMS</center></h2><br>
+
+      <!-- 1. Stankonia -->
+      <div class="row featurette">
+        <div class="col-md-7">
+          <a href="http://genius.com/albums/outkast/stankonia" target="_blank"><h2 class="featurette-heading">Outkast - Stankonia (2000)</h2></a>
+          <p class="lead"> the fourth studio album by American hip hop duo OutKast. It was released on October 31, 2000, by La Face Records. The album was recorded in the duo's recently purchased Atlanta recording facility, Stankonia Studios, allowing for fewer time constraints and more musical experimentation. On this album, the duo worked to create an expansive and experimental musical aesthetic, incorporating a diverse array of musical styles that included funk, drum 'n' bass, gospel, techno, psychedelia, and rock into a Dirty South-oriented hip hop context.</p>
+        </div>
+        <div class="col-md-5">
+          <a href="http://genius.com/albums/outkast/stankonia" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/ATL/stankonia.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 2. Trap Muzik -->
+      <div class="row featurette">
+        <div class="col-md-7 col-md-push-5">
+          <a href="http://genius.com/albums/the-notorious-big/ready-to-die" target="_blank"><h2 class="featurette-heading">T.I. - Trap Muzik (2003)</h2></a>
+          <p class="lead">The second studio album by American hip hop recording artist T.I., released on August 19, 2003, through Atlantic Records and his newly founded record label Grand Hustle Records. The album spawned the hit singles "24's", "Be Easy", "Rubber Band Man", and "Let's Get Away".</p>
+        </div>
+        <div class="col-md-5 col-md-pull-7">
+          <a href="http://genius.com/albums/the-notorious-big/ready-to-die" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/ATL/trapmuzik.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 3. RAP Music -->
+      <div class="row featurette">
+        <div class="col-md-7">
+          <a href="http://genius.com/albums/Killer-mike/R-a-p-music" target="_blank"><h2 class="featurette-heading">Killer Mike -  R.A.P. Music (2012)</h2></a>
+          <p class="lead">Killer Mike’s 2012 album, R.A.P. Music (or Rebellious African People) relied on production from El-P, a partnership that would spawn the wildly successful hip hop due, Run the Jewels. "I put everything into this record. I said I was going to do everything I wanna do and say everything I wanna say."</p>
+        </div>
+        <div class="col-md-5">
+          <a href="http://genius.com/albums/Killer-mike/R-a-p-music" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/ATL/rapmusic.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 4. DS2 -->
+      <div class="row featurette">
+        <div class="col-md-7 col-md-push-5">
+          <a href="http://genius.com/albums/future/ds2" target="_blank"><h2 class="featurette-heading">Future - DS2 (2015)</h2></a>
+          <p class="lead">DS2 (aka Dirty Sprite 2) is Future’s third studio album and the sequel to his 2011 breakout mixtape, Dirty Sprite. The album was supported by four singles "Fuck Up Some Commas", "Real Sisters", "Blow a Bag" and "Where Ya At" featuring Drake.</p>
+        </div>
+        <div class="col-md-5 col-md-pull-7">
+          <a href="http://genius.com/albums/future/ds2" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/ATL/ds2.jpeg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 5. Barter 6 -->
+      <div class="row featurette">
+        <div class="col-md-7">
+          <a href="http://genius.com/albums/Young-thug/Barter-6" target="_blank"><h2 class="featurette-heading">Young Thug - Barter 6 (2015)</h2></a>
+          <p class="lead">Tha Barter VI was released on April 17th, 2015 – the same date as Thug’s mom’s birthday.
+
+          The album was originally dubbed “Tha Carter 6” as a spiritual successor to his idol Lil Wayne’s Carter series, but 3 days before its release, Thug swapped the ‘C’ for a ‘B’ – a true reflection of both his and Wayne’s Blood ties. (Plus the idea of a lawsuit was probably not appealing.)</p>
+        </div>
+        <div class="col-md-5">
+          <a href="http://genius.com/albums/young-thug/barter-6" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/ATL/barter6.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>2016 <a href="http://brendobrien.github.io/" target="_blank">Brendan O'Brien</a>  </p>
+      </footer>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./Library_files/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="./Library_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./Library_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./Library_files/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

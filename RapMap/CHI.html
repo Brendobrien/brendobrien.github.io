@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)http://localhost/Bootstrap/bootstrap-3.3.6/docs/examples/carousel/# -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>CHI</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./Library_files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="./Library_files/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="./Library_files/ie-emulation-modes-warning.js"></script><script type="text/javascript">try {
+window.AG_onLoad = function(func) { if (window.addEventListener) { window.addEventListener('DOMContentLoaded', func); } };
+window.AG_removeElementById = function(id) { var element = document.getElementById(id); if (element && element.parentNode) { element.parentNode.removeChild(element); }};
+window.AG_removeElementBySelector = function(selector) { if (!document.querySelectorAll) { return; } var nodes = document.querySelectorAll(selector); if (nodes) { for (var i = 0; i < nodes.length; i++) { if (nodes[i] && nodes[i].parentNode) { nodes[i].parentNode.removeChild(nodes[i]); } } } };
+window.AG_each = function(selector, fn) { if (!document.querySelectorAll) return; var elements = document.querySelectorAll(selector); for (var i = 0; i < elements.length; i++) { fn(elements[i]); }; };
+var AG_removeParent = function(el, fn) { while (el && el.parentNode) { if (fn(el)) { el.parentNode.removeChild(el); return; } el = el.parentNode; } };
+} catch (ex) { console.error('Error executing AG js: ' + ex); }</script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="./Library_files/carousel.css" rel="stylesheet">
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <nav class="navbar navbar-inverse navbar-static-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">CHI Hip Hop</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+              <ul class="nav navbar-nav">
+                <li><a href="./NYC.html">NYC</a></li>
+                <li><a href="LAX.html">LAX</a></li>
+                <li><a href="ATL.html">ATL</a></li>
+                <li class="active"><a href="#">CHI</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+      </div>
+    </div>
+
+
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="2" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="3" class="active"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item">
+          <img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>NYC Hip Hop</h1>
+              <p>Who Shot Ya?</p>
+              <p><a class="btn btn-lg btn-primary" href="./NYC.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>LAX Hip Hop</h1>
+              <p>Express Yourself</p>
+              <p><a class="btn btn-lg btn-primary" href="./LAX.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>ATL Hip Hop</h1>
+              <p>So Fresh, So Clean</p>
+              <p><a class="btn btn-lg btn-primary" href="./ATL.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item active">
+          <img class="fourth-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>CHI Hip Hop</h1>
+              <p>Jesus Walks</p>
+              <p><a class="btn btn-lg btn-primary" href="./CHI.html" role="button">View site</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="./#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="./#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+      
+      <h2 class="featurette-heading" style=""><center>LEGENDS</center></h2><br>
+
+      <!-- Three columns of text below the carousel -->
+      <!-- A. Legends -->
+      <div class="row">
+        <!-- Outkast -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="https://pbs.twimg.com/profile_images/626538291970580481/b0EztEEL.jpg" alt="Generic placeholder image" width="140" height="140">
+          <h2>Common</h2>
+          <p>Lonnie Rashid Lynn, Jr. (born March 13, 1972), better known by his stage name Common (previously Common Sense), is an American hip hop artist and actor. Common’s inspired mix of poetic flow and hiphop soul has marked him as one of the best in the game and a legend.</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/common" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+
+        <!-- Kanye -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="http://static.gigwise.com/artists/kanye_tlop_review_feat_750.jpg" width="140" height="140">
+          <h2>Kanye West</h2>
+          <p>The ubiquitous Kanye West. From his famous quip “George Bush doesn’t care about black people” to “I'ma let you finish” to marrying Kim Kardashian to announcing that he’s running for President, you can see that he’s a staple in the tabloids and blog posts.
+
+          But that certainly doesn’t take anything away from his music. As matter of fact, it makes it better. For instance, his 2010 solo album, My Beautiful Dark Twisted Fantasy was universally praised by fans and critics alike; it was recorded during the backlash he received from the Swift interruption and during his break-up with then girlfriend Amber Rose..</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/kanye-west" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+        
+        <!-- Lupe -->
+        <div class="col-lg-4">
+          <img class="img-circle" src="http://urltv.tv/wp-content/uploads/2014/06/Lupe.jpg" width="140" height="140">
+          <h2>Lupe Fiasco</h2>
+          <p>The Chicago born Wasalu Muhammad Jaco first tasted success when he featured on Kanye West’s hit “Touch the Sky”, a track that shortly preceded his real breakout, his 2006 debut album Lupe Fiasco’s Food & Liquor and never looked back. He has established himself as one of the greatest urban wordsmiths of all time, with Genius even dubbing him the ‘Proust of Rap’.</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/lupe-fiasco" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+      
+      <hr class="featurette-divider">
+
+      <!-- B.Currents -->
+      <div class="row">
+        <div class="col-lg-4  col-lg-push-2">
+          <h2><center>ON FIRE</center></h2><br>
+          <img class="img-circle" src="http://okp-cdn.okayplayer.com/wp-content/uploads/2015/05/chance-the-rapper-speaks-at-harvard-715x714.jpg" width="140" height="140">
+          <h2>Chance the Rapper</h2>
+          <p>Chance The Rapper is front man and lead vocalist for the band The Social Experiment. His unconventional, bohemian approach to releasing music has led the wave of independent artists garnering national attention without a backing label. His two acclaimed solo projects 10 Day and Acid Rap have been called “classic” by Rolling Stone and Billboard Magazine. So far the artist has yet to release any material for purchase and even posted an hour long concert video of him at Lollapalooza in his hometown of Chicago.</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/chance-the-rapper" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 col-lg-push-2">
+          <h2><center>COME UP</center></h2><br>
+          <img class="img-circle" src="http://pitchfork-cdn.s3.amazonaws.com/longform/140/mickjenkins500Lawrence-Agyei.jpg" width="140" height="140">
+          <h2>Mick Jenkins</h2>
+          <p>Mick Jenkins is an artist from Southside Chicago, IL. He is a hard-working, ginger ale loving, water giving soul that will always quench anyone’s thirst if you just give him the time to/</p>
+          <p><a class="btn btn-default" href="http://genius.com/artists/mick-jenkins" role="button" target="_blank">View Genius »</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->  
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider">
+
+      <h2 class="featurette-heading" style=""><center>ALBUMS</center></h2><br>
+
+      <!-- 1. Stankonia -->
+      <div class="row featurette">
+        <div class="col-md-7">
+          <a href="http://genius.com/albums/Common/Resurrection" target="_blank"><h2 class="featurette-heading">Common - Resurrection (1994)</h2></a>
+          <p class="lead"> This album was Common’s (then known as Common Sense) second try to put Chicago —a city better known for house than hip-hop— on the map."I even called the album Resurrection because, in many ways, I felt like I was dead to some people. People didn’t know about me. I remember looking at A Tribe Called Quest’s Midnight Marauders cover and it had all the fresh, young dudes. I didn’t get asked to be on that cover, so that was, like, ‘Man! I didn’t get invited to the big game.’ I wanted to be included as part of the next movement of artists. [I felt like I was] overlooked."</p>
+        </div>
+        <div class="col-md-5">
+          <a href="http://genius.com/albums/Common/Resurrection" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/CHI/resurrection.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 2. Trap Muzik -->
+      <div class="row featurette">
+        <div class="col-md-7 col-md-push-5">
+          <a href="http://genius.com/albums/Kanye-west/The-college-dropout" target="_blank"><h2 class="featurette-heading">Kanye West - The College Dropout (2004)</h2></a>
+          <p class="lead">“The name of my album is called The College Dropout,” he said of his debut. “All that’s saying is make your own decisions. Don’t let society tell you, ‘This is what you have to do.’ Society told me, ‘Man, don’t move from Chicago.’ People told me to stay in school, this music is this, this music is that. I listen to John Mayer, and his song ‘No Such Thing’ is exactly what my [philosophy] is about, but in different words.”
+
+          With 10 Grammy Nominations including a win for Best Rap Album, this album is hailed as one of the best albums of the Decade and one of the best debut Hip Hop Albums of all time. One may even go on to say that the verses he dropped on this album were his best of all time.</p>
+        </div>
+        <div class="col-md-5 col-md-pull-7">
+          <a href="http://genius.com/albums/Kanye-west/The-college-dropout" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/CHI/collegedropout.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 3. RAP Music -->
+      <div class="row featurette">
+        <div class="col-md-7">
+          <a href="http://genius.com/albums/Lupe-fiasco/Lupe-fiasco-s-food-liquor" target="_blank"><h2 class="featurette-heading">Lupe Fiasco - Lupe Fiasco's Food & Liquor (2006)</h2></a>
+          <p class="lead">Lupe Fiasco’s Food & Liquor, also referred to as Food & Liquor, is the debut album by Lupe Fiasco, released on September 19, 2006.
+
+          "Food & Liquor, in Chicago a lot of the corner stores are called Food & Liquor so I haven’t seen that anywhere else in the world like 80% of the stores in Chicago are called Food & Liquor. So it represents that to me and then on the other side I don’t drink or smoke. Alcohol is like a bad thing to me. So the liquor represents the bad and the food represents the good."</p>
+        </div>
+        <div class="col-md-5">
+          <a href="http://genius.com/albums/Lupe-fiasco/Lupe-fiasco-s-food-liquor" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/CHI/food&liquor.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 4. acidrap -->
+      <div class="row featurette">
+        <div class="col-md-7 col-md-push-5">
+          <a href="http://genius.com/albums/Chance-the-rapper/Acid-rap" target="_blank"><h2 class="featurette-heading">Chance the Rapper - Acid Rap (2013)</h2></a>
+          <p class="lead">Acid Rap gave Chance nation-wide recognition. There's a lot of shit going on, but social commentary is perhaps Acid Rap’s most distinctive feature. Chance is reminded of watching his friend die in every empty hallway, compares Chicago’s gang violence to Hurricane Katrina, and longs for the days when he could peacefully watch cartoons.
+
+          Although Chance’s style is dramatically different from that of Kendrick Lamar, comparisons between Acid Rap and good kid, m.A.A.d city are fully justified.</p>
+        </div>
+        <div class="col-md-5 col-md-pull-7">
+          <a href="http://genius.com/albums/Chance-the-rapper/Acid-rap" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/CHI/acidrap.jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- 5. waters -->
+      <div class="row featurette">
+        <div class="col-md-7">
+          <a href="http://genius.com/albums/mick-jenkins/the-water-s" target="_blank"><h2 class="featurette-heading">Mick Jenkins - The Water[s] (2014)</h2></a>
+          <p class="lead">"Water is a direct metaphor for the truth, [which is] just as important as water is to the world, to our lives, to our well-being. By truth I mean the true nature of things like beauty, success and wealth – what those things really are as opposed to what the media pushes and would lead us to believe that those things are. What the world standard for beauty is as opposed to the fact that beauty is everywhere – we’re all God’s creations and we’re all beautiful, and that’s the real truth. So when I say drink more water, when I say I’ve been in these waters, when i reference water like that, it’s really synonymous with saying “Learn more things, gain more knowledge and seek more truth.”</p>
+        </div>
+        <div class="col-md-5">
+          <a href="http://genius.com/albums/mick-jenkins/the-water-s" target="_blank">
+          <img class="featurette-image img-responsive center-block" src="./albums/CHI/water[s].jpg" alt="Generic placeholder image">
+          </a>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>2016 <a href="http://brendobrien.github.io/" target="_blank">Brendan O'Brien</a>  </p>
+      </footer>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./Library_files/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="./Library_files/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="./Library_files/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./Library_files/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
