@@ -60,6 +60,21 @@ body {
   height: 300px;
 }
 
+.first-slide {
+  opacity: 0.4;
+}
+
+.second-slide {
+  opacity: 0.4;
+}
+
+.third-slide {
+  opacity: 0.4;
+}
+
+.fourth-slide {
+  opacity: 0.4;
+}
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
