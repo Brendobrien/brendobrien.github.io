@@ -100,22 +100,6 @@ angular.module('starter.controllers', [])
 
   $scope.makeEvents = function(){
     for(i = 0; i < $scope.workouts.length; i++){
-      $scope.events[i] = 
-      {
-        end: 
-        {
-          dateTime: "",
-          timeZone: "America/New_York"
-        },
-        start: 
-        {
-          dateTime: "",
-          timeZone: "America/New_York"
-        },
-        summary: "",
-        recurrence: [
-        ]
-      }
       parseEvents(i);
     }
 
@@ -125,6 +109,22 @@ angular.module('starter.controllers', [])
   }
 
   function parseEvents(i){
+    $scope.events[i] = {
+      end: 
+      {
+        dateTime: "",
+        timeZone: "America/New_York"
+      },
+      start: 
+      {
+        dateTime: "",
+        timeZone: "America/New_York"
+      },
+      summary: "",
+      recurrence: [
+      ]
+    };
+
     $scope.events[i].end.dateTime = $scope.workouts[i].endTime;
     $scope.events[i].start.dateTime = $scope.workouts[i].startTime;
     $scope.events[i].summary = $scope.workouts[i].sport + ": " + $scope.workouts[i].status;
@@ -136,8 +136,7 @@ angular.module('starter.controllers', [])
       if($scope.workouts[i].repeat[j].checked){
         $scope.events[i].recurrence[0] = $scope.events[i].recurrence[0] + $scope.workouts[i].repeat[j].text.substring(0,2)+",";
       }
-    }
-    
+    }    
   }
 
   function parseEndDate(i){
@@ -196,7 +195,7 @@ angular.module('starter.controllers', [])
     });
   }
 
-    $scope.getGAPI = function() {
+  $scope.getGAPI = function() {
     // Just call the API as you'd do using $http
     var yolo = JSON.parse(localStorage.getItem('profile'));
     var yelo = yolo['identities'][0]['access_token'];
