@@ -12,7 +12,7 @@ angular.module('starter.controllers', [])
       store.set('profile', profile);
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
-      $state.go('newWorkout');
+      $state.go('editWorkouts');
     }, function(error) {
       console.log("There was an error logging in", error);
     });
@@ -32,7 +32,7 @@ angular.module('starter.controllers', [])
   $scope.workouts = Workouts.wos();
 
   console.log($scope.workoutDefault.edit);
-  console.info($scope.workouts[$scope.workoutDefault.woid]);
+  console.log($scope.workoutDefault.woid);
 
   if($scope.workoutDefault.edit){
     $scope.currentWorkout = $scope.workouts[$scope.workoutDefault.woid];
@@ -49,26 +49,29 @@ angular.module('starter.controllers', [])
 
   $scope.addWorkout = function(){
     // Reset Default
-    $scope.workoutDefault.id = 0;
-    $scope.workoutDefault.sport = "Baseball";
-    $scope.workoutDefault.status = "Pre-Season (High Intensity)";
-    $scope.workoutDefault.startTime = new Date();
-    $scope.workoutDefault.endTime = new Date();
-    $scope.workoutDefault.endDate = new Date();
-    $scope.workoutDefault.repeat = [
-      { text: "SUN", checked: false },
-      { text: "MON", checked: false },
-      { text: "TUE", checked: false },
-      { text: "WED", checked: false },
-      { text: "THU", checked: false },
-      { text: "FRI", checked: false },
-      { text: "SAT", checked: false }
-    ];
-    $scope.workoutDefault.edit = false;
-    $scope.workoutDefault.woid = 0;
-    
-    $scope.currentWorkout.id = $scope.workouts.length - 1;
-    $scope.workouts.push($scope.currentWorkout);
+    // $scope.workoutDefault.id = 0;
+    // $scope.workoutDefault.sport = "Baseball";
+    // $scope.workoutDefault.status = "Pre-Season (High Intensity)";
+    // $scope.workoutDefault.startTime = new Date();
+    // $scope.workoutDefault.endTime = new Date();
+    // $scope.workoutDefault.endDate = new Date();
+    // $scope.workoutDefault.repeat = [
+    //   { text: "SUN", checked: false },
+    //   { text: "MON", checked: false },
+    //   { text: "TUE", checked: false },
+    //   { text: "WED", checked: false },
+    //   { text: "THU", checked: false },
+    //   { text: "FRI", checked: false },
+    //   { text: "SAT", checked: false }
+    // ];
+    // $scope.workoutDefault.edit = false;
+    // $scope.workoutDefault.woid = 0;
+    // console.log($scope.currentWorkout);
+
+    if(!$scope.workoutDefault.edit){
+      $scope.currentWorkout.id = $scope.workouts.length;
+      $scope.workouts.push($scope.currentWorkout);
+    }
   }
 })
 
@@ -77,8 +80,9 @@ angular.module('starter.controllers', [])
   $scope.workouts = Workouts.wos();
   $scope.events = Events.all();
 
+  console.log($scope.workouts);
+
   $scope.editWorkout = function(workoutId){
-    console.log(workoutId);
     $scope.workoutDefault.edit = true;
     $scope.workoutDefault.woid = workoutId;
     $state.go('newWorkout');
@@ -180,6 +184,7 @@ angular.module('starter.controllers', [])
             res.json()
                 .then(function(data) {
                     console.log('not 200', data);
+                    $state.go('login');
                 })
                 .catch(function(parseErr) {
                     console.error(parseErr);
