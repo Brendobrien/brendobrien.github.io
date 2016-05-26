@@ -45,8 +45,6 @@ angular.module('starter.controllers', [])
     $scope.currentWorkout.endTime.setUTCMinutes(0,0,0);
   }
 
-  // $scope.workouts.push("yolo");
-
   $scope.addWorkout = function(){
     // Reset Default
     // $scope.workoutDefault.id = 0;
@@ -75,10 +73,11 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('editWorkoutsCtrl', function($scope, $state, Workouts, Events){
+.controller('editWorkoutsCtrl', function($scope, $state, Workouts, Events, Meals){
   $scope.workoutDefault = Workouts.defaults();
   $scope.workouts = Workouts.wos();
   $scope.events = Events.all();
+  $scope.meals = Meals.all();
 
   console.log($scope.workouts);
 
@@ -91,6 +90,7 @@ angular.module('starter.controllers', [])
   $scope.deleteWorkout = function(workoutId){
     console.log(workoutId);
     $scope.workouts.splice(workoutId,1);
+    console.log($scope.workouts);
   }
 
   $scope.createWorkout = function() {
@@ -102,6 +102,8 @@ angular.module('starter.controllers', [])
     for(i = 0; i < $scope.workouts.length; i++){
       parseEvents(i);
     }
+
+    // $scope.events = $scope.events.concat($scope.meals);
 
     for(i = 0; i < $scope.events.length; i++){
       postGAPI(i);
@@ -158,10 +160,10 @@ angular.module('starter.controllers', [])
   function postGAPI(i) {
     var yolo = JSON.parse(localStorage.getItem('profile'));
     var yelo = yolo['identities'][0]['access_token'];
-    console.log($scope.events[0]);
+    console.log($scope.events[i]);
 
     var header = new Headers();
-    header.append("Access-Control-Allow-Origin", "*");
+    //header.append("Access-Control-Allow-Origin", "*");
     header.append("Content-Type", "application/json");
 
     fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token='+yelo, {
