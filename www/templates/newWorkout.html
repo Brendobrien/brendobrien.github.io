@@ -3,19 +3,12 @@
         <div class="spacer" style="width: 297.313px; height: 0px;"></div>
         <div class="">
             <img src="img/Weight.png" width="100" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
-            <pre>
-            {{ workouts[0].sport }}
-            {{ workouts[0].status }}
-            {{ workouts[0].startTime }}
-            {{ workouts[0].endTime }}
-            {{ workouts[0].repeat }}
-            </pre>
         </div>
         <form id="newWorkoutEvent-form7" class="list ">
             <h3 id="newWorkoutEvent-heading3" style="color:#FF3800;text-align:center;" class=" "></h3>
             <label class="item item-select " id="newWorkoutEvent-select1">
                 <span class="input-label">Sport</span>
-                <select ng-model="workouts[0].sport">
+                <select ng-model="currentWorkout.sport">
                     <option>Baseball</option>
                     <option>Field Hockey</option>
                     <option>Football</option>
@@ -61,7 +54,7 @@
             </label>
             <label class="item item-select " id="newWorkoutEvent-select2">
                 <span class="input-label">Status</span>
-                <select ng-model="workouts[0].status">
+                <select ng-model="currentWorkout.status">
                     <option>Pre-Season (High Intensity)</option>
                     <option>In-Season (Moderate Intensity)</option>
                     <option>Post-Season (Low Intensity)</option>
@@ -75,30 +68,31 @@
             </div>
             <label class="item item-input " id="newWorkoutEvent-input9" name="Start Time">
                 <span class="input-label">Start Time</span>
-                <input ng-model="workouts[0].startTime" type="time" placeholder="">
+                <input ng-model="currentWorkout.startTime" type="time" placeholder="">
             </label>
             <label class="item item-input " id="newWorkoutEvent-input11" name="End Time">
                 <span class="input-label">End Time</span>
-                <input ng-model="workouts[0].endTime" type="time" placeholder="">
+                <input ng-model="currentWorkout.endTime" type="time" placeholder="">
             </label>
             <div style="margin-right:-20px;">
                 <button id="newWorkoutEvent-button22" style="left:-10px;" class=" button button-assertive button-large button-full button-clear icon ion-android-calendar "></button>
             </div>
             <label class="item item-input " id="newWorkoutEvent-input12" name="Start Date">
                 <span class="input-label">Start Date</span>
-                <input ng-model="workouts[0].startTime" type="date" placeholder="">
+                <input ng-model="currentWorkout.startTime" type="date" placeholder="">
             </label>
             <label class="item item-input " id="newWorkoutEvent-input13" name="End Date">
                 <span class="input-label">End Date</span>
-                <input ng-model="workouts[0].endTime" type="date" placeholder="">
+                <input ng-model="currentWorkout.endDate" type="date" placeholder="">
             </label>
             <button id="newWorkoutEvent-button23" class=" button button-assertive button-large button-block button-clear icon ion-android-refresh "></button>
             <h3 id="newWorkoutEvent-heading4" style="color:#FF3800;text-align:center;" class=" "></h3>
-            <ion-toggle ng-repeat="item in workouts[0].repeat" ng-model="item.checked" ng-checked="item.checked" toggle-class="toggle-assertive" id="newWorkoutEvent-toggle2">
+            <ion-toggle ng-repeat="item in currentWorkout.repeat" ng-model="item.checked" ng-checked="item.checked" toggle-class="toggle-assertive" id="newWorkoutEvent-toggle2">
             {{ item.text }}
             </ion-toggle>
         </form>
         <a ng-click="addWorkout()" ui-sref="editWorkouts" id="newWorkoutEvent-button26" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create Workout</a>
+        <a ui-sref="editWorkouts" id="editWorkoutEvents-button11" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Cancel</a>
         <div class="spacer" style="width: 277.313px; height: 12px;"></div>
     </ion-content>
 </ion-view>
