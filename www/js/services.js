@@ -22,40 +22,41 @@ angular.module('starter.services', [])
     woid:0
   };
 
-  var workouts = [{
-    id:0,
-    sport: "Men's Swimming and Diving",
-    status: "Pre-Season (High Intensity)",
-    startTime: new Date(2016, 4, 25, 6),
-    endTime: new Date(2016, 4, 25, 8),
-    endDate: new Date(2016, 4, 31, 6),
-    repeat:[
-      { text: "SUN", checked: false },
-      { text: "MON", checked: true },
-      { text: "TUE", checked: true },
-      { text: "WED", checked: true },
-      { text: "THU", checked: true },
-      { text: "FRI", checked: true },
-      { text: "SAT", checked: false }
-    ]
-  },
-  {
-    id:1,
-    sport: "Men's Swimming and Diving",
-    status: "Pre-Season (High Intensity)",
-    startTime: new Date(2016, 4, 25, 16),
-    endTime: new Date(2016, 4, 25, 18),
-    endDate: new Date(2016, 5, 25, 6),
-    repeat:[
-      { text: "SUN", checked: false },
-      { text: "MON", checked: true },
-      { text: "TUE", checked: true },
-      { text: "WED", checked: true },
-      { text: "THU", checked: true },
-      { text: "FRI", checked: true },
-      { text: "SAT", checked: false }
-    ]
-  }
+  var workouts = [
+  // {
+  //   id:0,
+  //   sport: "Men's Swimming and Diving",
+  //   status: "Pre-Season (High Intensity)",
+  //   startTime: new Date(2016, 4, 25, 6),
+  //   endTime: new Date(2016, 4, 25, 8),
+  //   endDate: new Date(2016, 4, 31, 6),
+  //   repeat:[
+  //     { text: "SUN", checked: false },
+  //     { text: "MON", checked: true },
+  //     { text: "TUE", checked: true },
+  //     { text: "WED", checked: true },
+  //     { text: "THU", checked: true },
+  //     { text: "FRI", checked: true },
+  //     { text: "SAT", checked: false }
+  //   ]
+  // },
+  // {
+  //   id:1,
+  //   sport: "Men's Swimming and Diving",
+  //   status: "Pre-Season (High Intensity)",
+  //   startTime: new Date(2016, 4, 25, 16),
+  //   endTime: new Date(2016, 4, 25, 18),
+  //   endDate: new Date(2016, 5, 25, 6),
+  //   repeat:[
+  //     { text: "SUN", checked: false },
+  //     { text: "MON", checked: true },
+  //     { text: "TUE", checked: true },
+  //     { text: "WED", checked: true },
+  //     { text: "THU", checked: true },
+  //     { text: "FRI", checked: true },
+  //     { text: "SAT", checked: false }
+  //   ]
+  // }
   ];
 
   return {

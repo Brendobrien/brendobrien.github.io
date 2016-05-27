@@ -30,17 +30,16 @@ angular.module('starter.controllers', [])
 .controller('newWorkoutCtrl', function($scope, Workouts) {
   $scope.workoutDefault = Workouts.defaults();
   $scope.workouts = JSON.parse(localStorage.workouts);
-  // $scope.workouts = Workouts.wos();
 
   console.log($scope.workoutDefault.edit);
 
   if($scope.workoutDefault.edit){
     $scope.currentWorkout = $scope.workouts[$scope.workoutDefault.woid];
-    console.log($scope.workouts);
+    console.log($scope.currentWorkout);
     $scope.currentWorkout.startTime =  new Date($scope.currentWorkout.startTime);
     $scope.currentWorkout.endTime =  new Date($scope.currentWorkout.endTime);
     $scope.currentWorkout.endDate =  new Date($scope.currentWorkout.endDate);
-    console.log($scope.workouts);
+    console.log($scope.currentWorkout);
   }
   else {
     $scope.currentWorkout = $scope.workoutDefault;
@@ -52,26 +51,25 @@ angular.module('starter.controllers', [])
 
   $scope.addWorkout = function(){
     // Reset Default
-    // $scope.workoutDefault.id = 0;
-    // $scope.workoutDefault.sport = "Baseball";
-    // $scope.workoutDefault.status = "Pre-Season (High Intensity)";
-    // $scope.workoutDefault.startTime = new Date();
-    // $scope.workoutDefault.endTime = new Date();
-    // $scope.workoutDefault.endDate = new Date();
-    // $scope.workoutDefault.repeat = [
-    //   { text: "SUN", checked: false },
-    //   { text: "MON", checked: false },
-    //   { text: "TUE", checked: false },
-    //   { text: "WED", checked: false },
-    //   { text: "THU", checked: false },
-    //   { text: "FRI", checked: false },
-    //   { text: "SAT", checked: false }
-    // ];
+    $scope.workoutDefault.id = 0;
+    $scope.workoutDefault.sport = "Baseball";
+    $scope.workoutDefault.status = "Pre-Season (High Intensity)";
+    $scope.workoutDefault.startTime = new Date();
+    $scope.workoutDefault.endTime = new Date();
+    $scope.workoutDefault.endDate = new Date();
+    $scope.workoutDefault.repeat = [
+      { text: "SUN", checked: false },
+      { text: "MON", checked: false },
+      { text: "TUE", checked: false },
+      { text: "WED", checked: false },
+      { text: "THU", checked: false },
+      { text: "FRI", checked: false },
+      { text: "SAT", checked: false }
+    ];
 
-    // $scope.workoutDefault.edit = false;
-    // $scope.workoutDefault.woid = 0;
-
-    console.log($scope.workouts);
+    $scope.workoutDefault.edit = false;
+    $scope.workoutDefault.woid = 0;
+    console.log($scope.currentWorkout);
 
     if(!$scope.workoutDefault.edit){
       $scope.currentWorkout.id = $scope.workouts.length;
@@ -82,16 +80,13 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('editWorkoutsCtrl', function($scope, $state, $window, Workouts, Events, Meals){
+.controller('editWorkoutsCtrl', function($scope, $state, Workouts, Events, Meals){
   $scope.workoutDefault = Workouts.defaults();
   $scope.workouts = JSON.parse(localStorage.workouts);
-  // $scope.workouts = Workouts.wos();
   $scope.events = Events.all();
   $scope.meals = Meals.all();
 
-  console.info($scope.workouts);
-  // $state.go($state.current, {}, {reload: true});
-  // $window.location.reload(true)
+  console.log($scope.workouts);
 
   $scope.editWorkout = function(workoutId){
     $scope.workoutDefault.edit = true;
@@ -102,7 +97,6 @@ angular.module('starter.controllers', [])
   $scope.deleteWorkout = function(workoutId){
     console.log(workoutId);
     $scope.workouts.splice(workoutId,1);
-    localStorage.workouts = JSON.stringify($scope.workouts);
     console.log($scope.workouts);
   }
 
@@ -112,23 +106,12 @@ angular.module('starter.controllers', [])
   }
 
   $scope.makeEvents = function(){
-    // Translate Date to Google API JSON
     for(i = 0; i < $scope.workouts.length; i++){
       parseEvents(i);
     }
 
-    // DELETE the previous calendar
-    // if(localStorage.first) {
-    //   deleteCalendar(); 
-    // }
-    // else {
-    //   localStorage.first = "false"
-    // }
-
-
     // $scope.events = $scope.events.concat($scope.meals);
-    
-    // POST events to the Google Calendar API
+
     for(i = 0; i < $scope.events.length; i++){
       postGAPI(i);
     }
@@ -139,26 +122,22 @@ angular.module('starter.controllers', [])
       end: 
       {
         dateTime: "",
-        timeZone: ""
+        timeZone: "America/New_York"
       },
       start: 
       {
         dateTime: "",
-        timeZone: ""
+        timeZone: "America/New_York"
       },
       summary: "",
       recurrence: [
       ]
     };
 
-    // dateTime
     $scope.events[i].end.dateTime = $scope.workouts[i].endTime;
     $scope.events[i].start.dateTime = $scope.workouts[i].startTime;
-
-    // summary
     $scope.events[i].summary = $scope.workouts[i].sport + ": " + $scope.workouts[i].status;
     
-    // recurrence
     var endDate = parseEndDate(i);
 
     $scope.events[i].recurrence[0] = "RRULE:FREQ=WEEKLY;UNTIL="+endDate+";BYDAY="
@@ -166,16 +145,10 @@ angular.module('starter.controllers', [])
       if($scope.workouts[i].repeat[j].checked){
         $scope.events[i].recurrence[0] = $scope.events[i].recurrence[0] + $scope.workouts[i].repeat[j].text.substring(0,2)+",";
       }
-    }
-
-    // Timezone
-    $scope.events[i].start.timeZone = jstz.determine().name();
-    $scope.events[i].end.timeZone = jstz.determine().name();
+    }    
   }
 
   function parseEndDate(i){
-    $scope.workouts[i].endDate =  new Date($scope.workouts[i].endDate);
-
     var yyyy = $scope.workouts[i].endDate.getFullYear();
     var mm = $scope.workouts[i].endDate.getMonth()+1; //January is 0!
     var dd = $scope.workouts[i].endDate.getDate();
@@ -189,45 +162,6 @@ angular.module('starter.controllers', [])
 
     return yyyy+mm+dd+"T170000Z";
     // return "20160701T170000Z";
-  }
-
-  function deleteCalendar(){
-    var yolo = JSON.parse(localStorage.getItem('profile'));
-    var yelo = yolo['identities'][0]['access_token'];
-
-    // var header = new Headers();
-    // header.append("Access-Control-Allow-Origin", "*");
-    // header.append("Content-Type", "application/json");
-
-    fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.calendarId+'?access_token='+yelo, {
-      method: "DELETE",
-      // headers: header,
-      // body: JSON.stringify($scope.events[i]),
-    })
-    .then(function(res) {
-        if (res.status === 200) {
-            res.json()
-                .then(function(data) {
-                    console.log(data);
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        } else {
-            console.error(res); // comes back but not HTTP 200
-            res.json()
-                .then(function(data) {
-                    console.log('not 200', data);
-                    $state.go('login');
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        }
-      })
-    .catch(function(err) {
-        console.error('network error');
-    });
   }
 
   function postGAPI(i) {
@@ -270,7 +204,7 @@ angular.module('starter.controllers', [])
     });
   }
 
-  function getGAPI() {
+  $scope.getGAPI = function() {
     // Just call the API as you'd do using $http
     var yolo = JSON.parse(localStorage.getItem('profile'));
     var yelo = yolo['identities'][0]['access_token'];
