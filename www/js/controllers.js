@@ -12,7 +12,13 @@ angular.module('starter.controllers', [])
       store.set('profile', profile);
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
-      $state.go('editWorkouts');
+      if(localStorage.workouts){
+        $state.go('editWorkouts');
+      }
+      else {
+        localStorage.workouts = [{}];
+        $state.go('newWorkout');
+      }
     }, function(error) {
       console.log("There was an error logging in", error);
     });
@@ -29,7 +35,12 @@ angular.module('starter.controllers', [])
 
 .controller('newWorkoutCtrl', function($scope, Workouts) {
   $scope.workoutDefault = Workouts.defaults();
-  $scope.workouts = JSON.parse(localStorage.workouts);
+  if(localStorage.workouts){
+    $scope.workouts = JSON.parse(localStorage.workouts);
+  }
+  else {
+    $scope.workouts = [];
+  }
   // $scope.workouts = Workouts.wos();
 
   console.log($scope.workoutDefault.edit);
@@ -84,7 +95,12 @@ angular.module('starter.controllers', [])
 
 .controller('editWorkoutsCtrl', function($scope, $state, $window, Workouts, Events, Meals){
   $scope.workoutDefault = Workouts.defaults();
-  $scope.workouts = JSON.parse(localStorage.workouts);
+  if(localStorage.workouts){
+    $scope.workouts = JSON.parse(localStorage.workouts);
+  }
+  else {
+    $scope.workouts = []
+  }
   // $scope.workouts = Workouts.wos();
   $scope.events = Events.all();
   $scope.meals = Meals.all();
@@ -125,6 +141,9 @@ angular.module('starter.controllers', [])
     //   localStorage.first = "false"
     // }
 
+    // POST a new calendar
+    // insertCalendar();
+    // TODO: make insert Calendar
 
     // $scope.events = $scope.events.concat($scope.meals);
     
