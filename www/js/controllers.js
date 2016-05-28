@@ -56,8 +56,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('editWorkoutCtrl', function($scope, $state, $stateParams, Workouts) {
-  console.log($state);
-  console.log($stateParams.woId);
+  $scope.workouts = Workouts.wos();
   $scope.currentWorkout = Workouts.get($stateParams.woId);
 
   // avoid parsing problems
@@ -66,17 +65,26 @@ angular.module('starter.controllers', [])
   $scope.currentWorkout.endDate =  new Date($scope.currentWorkout.endDate);
 
   $scope.changeWorkout = function(){
-    // console.log(woId);
+    for(i = 0; i < $scope.workouts.length; i++){
+      $scope.workouts[i].woId = i;
+    }
+    localStorage.workouts = JSON.stringify($scope.workouts);
+
     $state.go('workoutsList');
   }
 })
 
-.controller('workoutsListCtrl', function($scope, $state, $window, Workouts, Events, Meals){
+.controller('workoutsListCtrl', function($scope, $state, $window, Workouts, Events, Meals, Snacks){
   // load factories 
-  $scope.workoutDefault = Workouts.defaults();
+  // workouts
   $scope.workouts = Workouts.wos();
-  $scope.events = Events.all();
+  // breakfast lunch dinner
   $scope.meals = Meals.all();
+  // pre & post workout
+  $scope.snacks = Snacks.all();
+
+  // google api events (JSON)
+  $scope.events = Events.all();
 
   $scope.editWorkout = function(workoutId){
     console.log(workoutId);
@@ -104,9 +112,40 @@ angular.module('starter.controllers', [])
   }
 
   $scope.makeEvents = function(){
+    $scope.events = [];
+    $scope.snacks = [];
     // Translate Date to Google API JSON
     for(i = 0; i < $scope.workouts.length; i++){
       parseEvents(i);
+      makeSnacks(i);
+    }
+
+    mealDefaults();
+
+    // Which breakfast lunch and dinner?
+    var bldNumbers = [0, 0, 0];
+    for(i = 0; i < $scope.workouts.length; i++){
+      for(j = 0; j < $scope.meals.length; j++){
+        bldNumbers = workoutsnackOverlap(i,j,bldNumbers)
+      }
+    }
+
+    console.log(bldNumbers);
+    switchCases(bldNumbers);
+
+    for(i = 0; i < $scope.workouts.length; i++){
+      for(j = 0; j < $scope.meals.length; j++){
+        bldNumbers = workoutsnackOverlap(i,j,bldNumbers)
+      }
+    }
+
+    console.log(bldNumbers);
+    switchCases(bldNumbers);
+
+    for(j = 0; j < $scope.meals.length; j++){
+      for(k = 0; k < $scope.snacks.length; k++){
+        mealSnackOverlap(j,k);
+      }
     }
 
     // DELETE the previous calendar
@@ -116,14 +155,146 @@ angular.module('starter.controllers', [])
 
     // POST a new calendar
     insertCalendar();
-    // TODO: make insert Calendar
+  }
 
-    // $scope.events = $scope.events.concat($scope.meals);
+  function mealDefaults(){
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth();
+    var year = today.getFullYear();
+
+    for(i = 0; i < $scope.meals.length; i++){
+      $scope.meals[i].start.dateTime = new Date ($scope.meals[i].start.dateTime);
+      $scope.meals[i].start.dateTime.setDate(day);
+      $scope.meals[i].start.dateTime.setMonth(month);
+      $scope.meals[i].start.dateTime.setFullYear(year);
+
+      $scope.meals[i].end.dateTime = new Date ($scope.meals[i].end.dateTime);
+      $scope.meals[i].end.dateTime.setDate(day);
+      $scope.meals[i].end.dateTime.setMonth(month);
+      $scope.meals[i].end.dateTime.setFullYear(year);
+
+      $scope.meals[i].start.timeZone = jstz.determine().name();
+      $scope.meals[i].end.timeZone = jstz.determine().name();
+    }
+  }
+
+  function workoutsnackOverlap(i,j,bldNumbers) {
+    var workoutStart = new Date($scope.events[i].start.dateTime);
+    var workoutEnd = new Date($scope.events[i].end.dateTime);
+    var mealStart = new Date($scope.meals[j].start.dateTime);
+    var mealEnd = new Date($scope.meals[j].end.dateTime);
+
+    // this is cool: need a common day to compare these values
+    // so I chose December 20, 1993, my birthday
+    workoutStart.setDate(20);
+    workoutStart.setMonth(11);
+    workoutStart.setYear(1993);
+    workoutStart = workoutStart.getTime();
+
+    workoutEnd.setDate(20);
+    workoutEnd.setMonth(11);
+    workoutEnd.setYear(1993);
+    workoutEnd = workoutEnd.getTime();
+
+    mealStart.setDate(20);
+    mealStart.setMonth(11);
+    mealStart.setYear(1993);
+    mealStart = mealStart.getTime();
+
+    mealEnd.setDate(20);
+    mealEnd.setMonth(11);
+    mealEnd.setYear(1993);
+    mealEnd = mealEnd.getTime();
+
+    if(mealStart<=workoutEnd && mealEnd>=workoutStart){
+      bldNumbers[j]++;
+    }
+
+    return bldNumbers;
+  }
+
+  function switchCases(bldNumbers){
+    // Breakfast
+    switch (bldNumbers[0]) {
+      case 0:
+        break;
+      // case 1:
+      //   $scope.meals[0].end.dateTime = new Date($scope.meals[0].start.dateTime);
+        
+      //   var onehBefore = $scope.meals[0].end.dateTime.getTime() - (1*60*60*1000);
+        
+      //   $scope.meals[0].start.dateTime = new Date(onehBefore);
+      //   break;
+      default:
+        $scope.meals.splice(0,1);
+    }
     
-    // POST events to the Google Calendar API
-    // for(i = 0; i < $scope.events.length; i++){
-    //   postGAPI(i);
-    // }
+    // Lunch
+    switch(bldNumbers[1]) {
+      case 0:
+        break;
+      case 1:
+        $scope.meals[1].end.dateTime = new Date($scope.meals[1].start.dateTime);
+        
+        var onehBefore = $scope.meals[1].end.dateTime.getTime() - (1*60*60*1000);
+        
+        $scope.meals[1].start.dateTime = new Date(onehBefore);
+        break;
+      default:
+        $scope.meals.splice(1,1);
+    }
+
+    // Dinner
+    switch(bldNumbers[2]) {
+      case 0:
+        break;
+      case 1:
+        $scope.meals[2].start.dateTime = new Date($scope.meals[2].start.dateTime);
+        
+        var onehAfter = $scope.meals[2].start.dateTime.getTime() + (1*60*60*1000);
+        var twoh30After = $scope.meals[2].start.dateTime.getTime() + (2.5*60*60*1000);
+
+        $scope.meals[2].start.dateTime = new Date(onehAfter);
+        $scope.meals[2].end.dateTime = new Date(twoh30After);
+        break;
+      default:
+        $scope.meals.splice(2,1);
+    }
+  }
+
+  function mealSnackOverlap(j,k){
+    var mealStart = new Date($scope.meals[j].start.dateTime);
+    var mealEnd = new Date($scope.meals[j].end.dateTime);
+    var snackStart = new Date($scope.snacks[k].start.dateTime);
+    var snackEnd = new Date($scope.snacks[k].end.dateTime);
+
+    // this is cool: need a common day to compare these values
+    // so I chose December 20, 1993, my birthday
+    mealStart.setDate(20);
+    mealStart.setMonth(11);
+    mealStart.setYear(1993);
+    mealStart = mealStart.getTime();
+
+    mealEnd.setDate(20);
+    mealEnd.setMonth(11);
+    mealEnd.setYear(1993);
+    mealEnd = mealEnd.getTime();
+
+    snackStart.setDate(20);
+    snackStart.setMonth(11);
+    snackStart.setYear(1993);
+    snackStart = snackStart.getTime();
+
+    snackEnd.setDate(20);
+    snackEnd.setMonth(11);
+    snackEnd.setYear(1993);
+    snackEnd = snackEnd.getTime();
+
+    if(mealStart<=snackEnd && mealEnd>=snackStart){
+      $scope.snacks.splice(k,1);
+      console.log($scope.snacks);
+    }
   }
 
   $scope.deleteCalendarButton = function(){
@@ -132,9 +303,6 @@ angular.module('starter.controllers', [])
 
   $scope.insertCalendarButton = function(){
     insertCalendar()
-    // .then(function(res){
-    //   colorCalendar(res)
-    // });
   }
 
   function parseEvents(i){
@@ -192,6 +360,80 @@ angular.module('starter.controllers', [])
 
     return yyyy+mm+dd+"T170000Z";
     // return "20160701T170000Z";
+  }
+
+  function makeSnacks(i){
+    // Initialize Events
+    var pre = 
+    {
+      end: 
+      {
+        dateTime: "",
+        timeZone: ""
+      },
+      start: 
+      {
+        dateTime: "",
+        timeZone: ""
+      },
+      summary: "Consider Bar or Snack before Workout",
+      recurrence: [
+      ]
+    };
+    
+    var post =
+    {
+      end: 
+      {
+        dateTime: "",
+        timeZone: ""
+      },
+      start: 
+      {
+        dateTime: "",
+        timeZone: ""
+      },
+      summary: "Recovery Shake or Snack",
+      recurrence: [
+      ]
+    };
+
+    // dateTime
+    pre.end.dateTime = new Date($scope.workouts[i].startTime);
+    var onehBefore = pre.end.dateTime.getTime() - (1*60*60*1000);
+    pre.start.dateTime = new Date(onehBefore);
+
+    post.start.dateTime = new Date($scope.workouts[i].endTime);
+    var onehAfter = post.start.dateTime.getTime() + (1*60*60*1000);
+    post.end.dateTime = new Date(onehAfter);
+
+    // recurrence
+    var endDate = parseEndDate(i);
+
+    pre.recurrence[0] = "RRULE:FREQ=WEEKLY;UNTIL="+endDate+";BYDAY="
+    for(j = 0; j < $scope.workouts[i].repeat.length; j++){
+      if($scope.workouts[i].repeat[j].checked){
+        pre.recurrence[0] = pre.recurrence[0] + $scope.workouts[i].repeat[j].text.substring(0,2)+",";
+      }
+    }
+
+    post.recurrence[0] = "RRULE:FREQ=WEEKLY;UNTIL="+endDate+";BYDAY="
+    for(j = 0; j < $scope.workouts[i].repeat.length; j++){
+      if($scope.workouts[i].repeat[j].checked){
+        post.recurrence[0] = post.recurrence[0] + $scope.workouts[i].repeat[j].text.substring(0,2)+",";
+      }
+    }
+
+    // Timezone
+    pre.start.timeZone = jstz.determine().name();
+    pre.end.timeZone = jstz.determine().name();
+
+    post.start.timeZone = jstz.determine().name();
+    post.end.timeZone = jstz.determine().name();
+
+    // Push them on the array
+    $scope.snacks.push(pre);
+    $scope.snacks.push(post);
   }
 
   function deleteCalendar(){
@@ -304,12 +546,14 @@ angular.module('starter.controllers', [])
                   // .catch(function(err) {
                   //     console.error('network error');
                   // })
+                  $scope.events = $scope.events.concat($scope.meals);
+                  $scope.events = $scope.events.concat($scope.snacks);
+                  console.log($scope.events); 
 
                   for(i = 0; i < $scope.events.length; i++){
                     postGAPI(i);
                   }
-
-                  window.location.href = 'https://calendar.google.com/';
+                  // window.location.href = 'https://calendar.google.com/';
                 })
                 .catch(function(parseErr) {
                     console.error(parseErr);
