@@ -46,10 +46,19 @@ angular.module('starter', ['ionic',
     controller: 'newWorkoutCtrl'
   })
 
-  .state('editWorkouts',{
-    url:"/editWorkouts",
-    templateUrl: "templates/editWorkouts.html",
-    controller: 'editWorkoutsCtrl'
+  .state('editWorkout',{
+    url:"/editWorkout/:woId",
+    // params: {
+    //   id: null
+    // },
+    templateUrl: "templates/editWorkout.html",
+    controller: 'editWorkoutCtrl'
+  })
+
+  .state('workoutsList',{
+    url:"/workoutsList",
+    templateUrl: "templates/workoutsList.html",
+    controller: 'workoutsListCtrl'
   })
 
   // if none of the above states are matched, use this as the fallback

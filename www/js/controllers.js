@@ -13,7 +13,7 @@ angular.module('starter.controllers', [])
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
       if(localStorage.workouts){
-        $state.go('editWorkouts');
+        $state.go('workoutsList');
       }
       else {
         $state.go('newWorkout');
@@ -36,46 +36,42 @@ angular.module('starter.controllers', [])
   // load factories
   $scope.workoutDefault = Workouts.defaults();
   $scope.workouts = Workouts.wos();
-  
-  // copy original state
-  $scope.original = angular.copy(Workouts.wos());
 
-  console.log($scope.workoutDefault.edit);
+  $scope.workoutDefault.startTime.setUTCMinutes(0,0,0);
+  $scope.workoutDefault.endTime.setUTCHours($scope.workoutDefault.startTime.getUTCHours()+1);
+  $scope.workoutDefault.endTime.setUTCMinutes(0,0,0);
 
-  if($scope.workoutDefault.edit){
-    $scope.currentWorkout = $scope.workouts[$scope.workoutDefault.woid];
-
-    // avoid parsing problems
-    $scope.currentWorkout.startTime =  new Date($scope.currentWorkout.startTime);
-    $scope.currentWorkout.endTime =  new Date($scope.currentWorkout.endTime);
-    $scope.currentWorkout.endDate =  new Date($scope.currentWorkout.endDate);
-  }
-  else {
-    $scope.currentWorkout = $scope.workoutDefault;
-
-    $scope.currentWorkout.startTime.setUTCMinutes(0,0,0);
-    $scope.currentWorkout.endTime.setUTCHours($scope.currentWorkout.startTime.getUTCHours()+1);
-    $scope.currentWorkout.endTime.setUTCMinutes(0,0,0);
-  }
+  $scope.currentWorkout = angular.copy($scope.workoutDefault);
 
   $scope.addWorkout = function(){
-    if(!$scope.workoutDefault.edit){
-      $scope.currentWorkout.id = $scope.workouts.length;
-      $scope.workouts.push($scope.currentWorkout);
+    $scope.currentWorkout.woId = $scope.workouts.length;
+    $scope.workouts.push($scope.currentWorkout);
+
+    for(i = 0; i < $scope.workouts.length; i++){
+      $scope.workouts[i].woId = i;
     }
-
     localStorage.workouts = JSON.stringify($scope.workouts);
-  }
-
-  $scope.cancelWorkout = function(){
-    $scope.workouts = $scope.original;
-    console.log($scope.workouts);
-    console.log($scope.original);
-    $state.go('editWorkouts');
+    $state.go('workoutsList');
   }
 })
 
-.controller('editWorkoutsCtrl', function($scope, $state, $window, Workouts, Events, Meals){
+.controller('editWorkoutCtrl', function($scope, $state, $stateParams, Workouts) {
+  console.log($state);
+  console.log($stateParams.woId);
+  $scope.currentWorkout = Workouts.get($stateParams.woId);
+
+  // avoid parsing problems
+  $scope.currentWorkout.startTime =  new Date($scope.currentWorkout.startTime);
+  $scope.currentWorkout.endTime =  new Date($scope.currentWorkout.endTime);
+  $scope.currentWorkout.endDate =  new Date($scope.currentWorkout.endDate);
+
+  $scope.changeWorkout = function(){
+    // console.log(woId);
+    $state.go('workoutsList');
+  }
+})
+
+.controller('workoutsListCtrl', function($scope, $state, $window, Workouts, Events, Meals){
   // load factories 
   $scope.workoutDefault = Workouts.defaults();
   $scope.workouts = Workouts.wos();
@@ -83,19 +79,28 @@ angular.module('starter.controllers', [])
   $scope.meals = Meals.all();
 
   $scope.editWorkout = function(workoutId){
-    $scope.workoutDefault.edit = true;
-    $scope.workoutDefault.woid = workoutId;
-    $state.go('newWorkout');
+    console.log(workoutId);
+    $state.go('editWorkout', {woId:workoutId});
   }
 
   $scope.deleteWorkout = function(workoutId){
     $scope.workouts.splice(workoutId,1);
+    for(i = 0; i < $scope.workouts.length; i++){
+      $scope.workouts[i].woId = i;
+    }
     localStorage.workouts = JSON.stringify($scope.workouts);
   }
 
   $scope.createWorkout = function() {
-    $scope.workoutDefault.edit = false;
     $state.go('newWorkout');
+  }
+
+  $scope.refreshWorkouts = function(){
+    for(i = 0; i < $scope.workouts.length; i++){
+      $scope.workouts[i].woId = i;
+    }
+    localStorage.workouts = JSON.stringify($scope.workouts);
+    // $state.go($state.current, {}, {reload: true});
   }
 
   $scope.makeEvents = function(){
@@ -105,23 +110,31 @@ angular.module('starter.controllers', [])
     }
 
     // DELETE the previous calendar
-    // if(localStorage.first) {
-    //   deleteCalendar(); 
-    // }
-    // else {
-    //   localStorage.first = "false"
-    // }
+    if(localStorage.calendarId) {
+      deleteCalendar(); 
+    }
 
     // POST a new calendar
-    // insertCalendar();
+    insertCalendar();
     // TODO: make insert Calendar
 
     // $scope.events = $scope.events.concat($scope.meals);
     
     // POST events to the Google Calendar API
-    for(i = 0; i < $scope.events.length; i++){
-      postGAPI(i);
-    }
+    // for(i = 0; i < $scope.events.length; i++){
+    //   postGAPI(i);
+    // }
+  }
+
+  $scope.deleteCalendarButton = function(){
+    deleteCalendar();
+  }
+
+  $scope.insertCalendarButton = function(){
+    insertCalendar()
+    // .then(function(res){
+    //   colorCalendar(res)
+    // });
   }
 
   function parseEvents(i){
@@ -182,17 +195,174 @@ angular.module('starter.controllers', [])
   }
 
   function deleteCalendar(){
-    var yolo = JSON.parse(localStorage.getItem('profile'));
-    var yelo = yolo['identities'][0]['access_token'];
+    var person = JSON.parse(localStorage.getItem('profile'));
+    var token = person['identities'][0]['access_token'];
+    var calid = localStorage.getItem('calendarId');
+
+    // var brainbuild = {
+    //   calendarId: calid
+    // };
 
     // var header = new Headers();
-    // header.append("Access-Control-Allow-Origin", "*");
+    //header.append("Access-Control-Allow-Origin", "*");
     // header.append("Content-Type", "application/json");
 
-    fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.calendarId+'?access_token='+yelo, {
+    fetch('https://www.googleapis.com/calendar/v3/calendars/'+calid+'?access_token='+token, {
       method: "DELETE",
       // headers: header,
-      // body: JSON.stringify($scope.events[i]),
+      // body: JSON.stringify(brainbuild),
+    })
+    .then(function(res) {
+        if (res.status === 204) {
+          console.log(res);
+          localStorage.removeItem("calendarId");
+        } else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 204', data);
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+      })
+    .catch(function(err) {
+        console.error('network error');
+    });
+  }
+
+  function insertCalendar(){
+    var person = JSON.parse(localStorage.getItem('profile'));
+    var token = person['identities'][0]['access_token'];
+
+    var brainbuild = {
+      summary: "Brainbuild"
+    };
+
+    var bbcolor = {
+      backgroundColor: "#ff3800",
+      foregroundColor: "#ffffff",
+      selected: true
+    };
+
+    var calid;
+
+    var header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    fetch('https://www.googleapis.com/calendar/v3/calendars?access_token='+token, {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify(brainbuild),
+    })
+    .then(function(res) {
+        if (res.status === 200) {
+            res.json()
+                .then(function(data) {
+                    console.log(data);
+                    
+                    localStorage.calendarId = data.id;
+
+                  //   fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList/'+data.id+'?colorRgbFormat=true&access_token='+token, {
+                  //     method: "PUT",
+                  //     headers: header,
+                  //     body: JSON.stringify(bbcolor),
+                  //   })
+                  //   .then(function(res) {
+                  //     if (res.status === 200) {
+                  //         res.json()
+                  //             .then(function(data) {
+                  //                 console.log(data);
+
+                  //                 for(i = 0; i < $scope.events.length; i++){
+                  //                   postGAPI(i);
+                  //                 }
+
+                  //                 // window.location.href = 'https://calendar.google.com/';
+                  //             })
+                  //             .catch(function(parseErr) {
+                  //                 console.error(parseErr);
+                  //             });
+                  //     } else {
+                  //         console.error(res); // comes back but not HTTP 200
+                  //         res.json()
+                  //             .then(function(data) {
+                  //                 console.log('not 200', data);
+                  //                 if (data.error.code === 401){
+                  //                   $state.go('login');
+                  //                 }
+                  //             })
+                  //             .catch(function(parseErr) {
+                  //                 console.error(parseErr);
+                  //             });
+                  //     }
+                  //   })
+                  // .catch(function(err) {
+                  //     console.error('network error');
+                  // })
+
+                  for(i = 0; i < $scope.events.length; i++){
+                    postGAPI(i);
+                  }
+
+                  window.location.href = 'https://calendar.google.com/';
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        } 
+        else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 200', data);
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+      })
+    .catch(function(err) {
+        console.error('network error');
+    })
+  }
+
+  function doA() {
+    return new Promise((resolve, reject) => {
+      // do something
+
+      if (success) {
+        resovle(data); // data is the resolved value in the promise, you can get it in .then() as parameter
+      } else if (failure)
+        reject(error); // error is what you get in .catch() as parameter
+    });
+  }
+
+  function colorCalendar(calid){
+    var person = JSON.parse(localStorage.getItem('profile'));
+    var token = person['identities'][0]['access_token'];
+    // var calid = localStorage.calendarId;
+    localStorage.setItem("calendarId") = calid;
+
+    var bbcolor = {
+      "backgroundColor": "#ff3800",
+      "foregroundColor": "#ffffff"
+    };
+
+    var header = new Headers();
+    header.append("Content-Type", "application/json");
+
+    fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList/'+calid+'?colorRgbFormat=true&access_token='+token, {
+      method: "PUT",
+      headers: header,
+      body: JSON.stringify(bbcolor),
     })
     .then(function(res) {
         if (res.status === 200) {
@@ -208,7 +378,9 @@ angular.module('starter.controllers', [])
             res.json()
                 .then(function(data) {
                     console.log('not 200', data);
-                    $state.go('login');
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
                 })
                 .catch(function(parseErr) {
                     console.error(parseErr);
@@ -217,19 +389,19 @@ angular.module('starter.controllers', [])
       })
     .catch(function(err) {
         console.error('network error');
-    });
+    })
   }
 
   function postGAPI(i) {
-    var yolo = JSON.parse(localStorage.getItem('profile'));
-    var yelo = yolo['identities'][0]['access_token'];
+    var person = JSON.parse(localStorage.getItem('profile'));
+    var token = person['identities'][0]['access_token'];
     console.log($scope.events[i]);
 
     var header = new Headers();
     //header.append("Access-Control-Allow-Origin", "*");
     header.append("Content-Type", "application/json");
 
-    fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token='+yelo, {
+    fetch('https://www.googleapis.com/calendar/v3/calendars/'+localStorage.calendarId+'/events?access_token='+token, {
       method: "POST",
       headers: header,
       body: JSON.stringify($scope.events[i]),
@@ -262,6 +434,14 @@ angular.module('starter.controllers', [])
     });
   }
 
+  $scope.deleteLocalStorage = function(){
+    localStorage.removeItem("workouts");
+  }
+
+  $scope.refreshPage = function(){
+    document.location.reload(true);
+  }
+
   function getGAPI() {
     // Just call the API as you'd do using $http
     var yolo = JSON.parse(localStorage.getItem('profile'));
@@ -288,6 +468,7 @@ angular.module('starter.controllers', [])
       console.error("errored", err);
     });
   };
+
 })
 
 .controller('AccountCtrl', function($scope, auth, store, $state) {

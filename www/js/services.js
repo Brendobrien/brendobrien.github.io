@@ -3,7 +3,7 @@ angular.module('starter.services', [])
 .factory('Workouts', function(){
 
   var workoutDefault = {
-    id:0,
+    woId:0,
     sport: "Baseball",
     status: "Pre-Season (High Intensity)",
     startTime: new Date(),
@@ -17,9 +17,7 @@ angular.module('starter.services', [])
       { text: "THU", checked: false },
       { text: "FRI", checked: false },
       { text: "SAT", checked: false }
-    ],
-    edit: false,
-    woid:0
+    ]
   };
   
   if(localStorage.workouts){
@@ -27,40 +25,6 @@ angular.module('starter.services', [])
   }
   else {
     var workouts = [
-    // {
-    //   id:0,
-    //   sport: "Men's Swimming and Diving",
-    //   status: "Pre-Season (High Intensity)",
-    //   startTime: new Date(2016, 4, 25, 6),
-    //   endTime: new Date(2016, 4, 25, 8),
-    //   endDate: new Date(2016, 4, 31, 6),
-    //   repeat:[
-    //     { text: "SUN", checked: false },
-    //     { text: "MON", checked: true },
-    //     { text: "TUE", checked: true },
-    //     { text: "WED", checked: true },
-    //     { text: "THU", checked: true },
-    //     { text: "FRI", checked: true },
-    //     { text: "SAT", checked: false }
-    //   ]
-    // },
-    // {
-    //   id:1,
-    //   sport: "Men's Swimming and Diving",
-    //   status: "Pre-Season (High Intensity)",
-    //   startTime: new Date(2016, 4, 25, 16),
-    //   endTime: new Date(2016, 4, 25, 18),
-    //   endDate: new Date(2016, 5, 25, 6),
-    //   repeat:[
-    //     { text: "SUN", checked: false },
-    //     { text: "MON", checked: true },
-    //     { text: "TUE", checked: true },
-    //     { text: "WED", checked: true },
-    //     { text: "THU", checked: true },
-    //     { text: "FRI", checked: true },
-    //     { text: "SAT", checked: false }
-    //   ]
-    // }
     ];
 }
 
@@ -70,6 +34,14 @@ angular.module('starter.services', [])
     },
     wos: function() {
       return workouts;
+    },
+    get: function(woId){
+      for (var i = 0; i < workouts.length; i++){
+        if(workouts[i].woId === parseInt(woId)) {
+          return workouts[i];
+        }
+      }
+      return null;
     }
     // put: function
   };
