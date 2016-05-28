@@ -1,6 +1,6 @@
 <ion-view title="Edit Workout Events" hide-back-button="true" id="page7" class=" ">
     <ion-content padding="true" class="has-header">
-        <!-- Workout Event -->
+        <!-- workout event -->
         <div class="list card " id="editWorkoutEvents-card7" ng-repeat=" workout in workouts">
             <div class="item item-divider">{{ workout.sport }}: {{ workout.status }}</div>
             <div class="item item-body">
@@ -28,11 +28,21 @@
             </div>
         </div>
 
-        <!-- To newWorkout.html -->
+        <!-- to newWorkout.html -->
         <a ng-click="createWorkout()" id="editWorkoutEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create Another Workout</a>
         
-        <!-- Post to GAPI -->
+        <!-- post to GAPI -->
         <a ng-click="makeEvents()" id="editWorkoutEvents-button11" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Generate Schedule</a>
+
+        <!-- delete to GAPI -->
+        <a ng-click="" id="editWorkoutEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Delete Brainbuild Calendar</a>
+
+        <!-- insert to GAPI -->
+        <a ng-click="" id="editWorkoutEvents-button11" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Insert Brainbuild Calendar</a>
+
+        <!-- delete to local-storage -->
+        <a ng-click="" id="editWorkoutEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Delete LocalStorage</a>
+
         <div class="spacer" style="width: 277.313px; height: 12px;"></div>
     </ion-content>
 </ion-view>

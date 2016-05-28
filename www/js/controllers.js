@@ -16,7 +16,6 @@ angular.module('starter.controllers', [])
         $state.go('editWorkouts');
       }
       else {
-        localStorage.workouts = [{}];
         $state.go('newWorkout');
       }
     }, function(error) {
@@ -33,25 +32,23 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('newWorkoutCtrl', function($scope, Workouts) {
+.controller('newWorkoutCtrl', function($scope, $state, Workouts) {
+  // load factories
   $scope.workoutDefault = Workouts.defaults();
-  if(localStorage.workouts){
-    $scope.workouts = JSON.parse(localStorage.workouts);
-  }
-  else {
-    $scope.workouts = [];
-  }
-  // $scope.workouts = Workouts.wos();
+  $scope.workouts = Workouts.wos();
+  
+  // copy original state
+  $scope.original = angular.copy(Workouts.wos());
 
   console.log($scope.workoutDefault.edit);
 
   if($scope.workoutDefault.edit){
     $scope.currentWorkout = $scope.workouts[$scope.workoutDefault.woid];
-    console.log($scope.workouts);
+
+    // avoid parsing problems
     $scope.currentWorkout.startTime =  new Date($scope.currentWorkout.startTime);
     $scope.currentWorkout.endTime =  new Date($scope.currentWorkout.endTime);
     $scope.currentWorkout.endDate =  new Date($scope.currentWorkout.endDate);
-    console.log($scope.workouts);
   }
   else {
     $scope.currentWorkout = $scope.workoutDefault;
@@ -62,28 +59,6 @@ angular.module('starter.controllers', [])
   }
 
   $scope.addWorkout = function(){
-    // Reset Default
-    // $scope.workoutDefault.id = 0;
-    // $scope.workoutDefault.sport = "Baseball";
-    // $scope.workoutDefault.status = "Pre-Season (High Intensity)";
-    // $scope.workoutDefault.startTime = new Date();
-    // $scope.workoutDefault.endTime = new Date();
-    // $scope.workoutDefault.endDate = new Date();
-    // $scope.workoutDefault.repeat = [
-    //   { text: "SUN", checked: false },
-    //   { text: "MON", checked: false },
-    //   { text: "TUE", checked: false },
-    //   { text: "WED", checked: false },
-    //   { text: "THU", checked: false },
-    //   { text: "FRI", checked: false },
-    //   { text: "SAT", checked: false }
-    // ];
-
-    // $scope.workoutDefault.edit = false;
-    // $scope.workoutDefault.woid = 0;
-
-    console.log($scope.workouts);
-
     if(!$scope.workoutDefault.edit){
       $scope.currentWorkout.id = $scope.workouts.length;
       $scope.workouts.push($scope.currentWorkout);
@@ -91,23 +66,21 @@ angular.module('starter.controllers', [])
 
     localStorage.workouts = JSON.stringify($scope.workouts);
   }
+
+  $scope.cancelWorkout = function(){
+    $scope.workouts = $scope.original;
+    console.log($scope.workouts);
+    console.log($scope.original);
+    $state.go('editWorkouts');
+  }
 })
 
 .controller('editWorkoutsCtrl', function($scope, $state, $window, Workouts, Events, Meals){
+  // load factories 
   $scope.workoutDefault = Workouts.defaults();
-  if(localStorage.workouts){
-    $scope.workouts = JSON.parse(localStorage.workouts);
-  }
-  else {
-    $scope.workouts = []
-  }
-  // $scope.workouts = Workouts.wos();
+  $scope.workouts = Workouts.wos();
   $scope.events = Events.all();
   $scope.meals = Meals.all();
-
-  console.info($scope.workouts);
-  // $state.go($state.current, {}, {reload: true});
-  // $window.location.reload(true)
 
   $scope.editWorkout = function(workoutId){
     $scope.workoutDefault.edit = true;
@@ -116,10 +89,8 @@ angular.module('starter.controllers', [])
   }
 
   $scope.deleteWorkout = function(workoutId){
-    console.log(workoutId);
     $scope.workouts.splice(workoutId,1);
     localStorage.workouts = JSON.stringify($scope.workouts);
-    console.log($scope.workouts);
   }
 
   $scope.createWorkout = function() {
@@ -277,7 +248,9 @@ angular.module('starter.controllers', [])
             res.json()
                 .then(function(data) {
                     console.log('not 200', data);
-                    $state.go('login');
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
                 })
                 .catch(function(parseErr) {
                     console.error(parseErr);
