@@ -1,0 +1,38 @@
+<ion-view title="Edit Workout Events" hide-back-button="true" id="page7" class=" ">
+    <ion-content padding="true" class="has-header">
+        <!-- Workout Event -->
+        <div class="list card " id="editWorkoutEvents-card7" ng-repeat=" workout in workouts">
+            <div class="item item-divider">{{ workout.sport }}: {{ workout.status }}</div>
+            <div class="item item-body">
+                <div>
+                    <div>
+                        <div>
+                            <i class="icon ion-android-calendar" style="margin-right: 5px"></i>Start Date: {{ workout.startTime | date:'MMMM d, y'}}
+                        </div>
+                        <div>
+                            <i class="icon ion-android-calendar" style="margin-right: 5px"></i>End Date: {{ workout.endDate | date:'MMMM d, y'}}
+                        </div>
+                        <div>
+                            <i class="icon ion-android-time" style="margin-right: 4px"></i>{{ workout.startTime | date:'shortTime'}} - {{ workout.endTime | date:'shortTime'}}
+                        </div>
+                        <div>
+                            <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly on 
+                            <div ng-show="rep.checked" id="repeat-day" ng-repeat="rep in workout.repeat">{{ rep.text }} </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="editWorkoutEvents-button-bar2" class=" button-bar ">
+                    <button ng-click="editWorkout(workout.id)" id="editWorkoutEvents-button65" class=" button button-dark  button-block button-outline icon ion-edit "></button>
+                    <button ng-click="deleteWorkout(workout.id)" id="editWorkoutEvents-button66" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- To newWorkout.html -->
+        <a ng-click="createWorkout()" id="editWorkoutEvents-button10" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block button-outline ">Create Another Workout</a>
+        
+        <!-- Post to GAPI -->
+        <a ng-click="makeEvents()" id="editWorkoutEvents-button11" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Generate Schedule</a>
+        <div class="spacer" style="width: 277.313px; height: 12px;"></div>
+    </ion-content>
+</ion-view>

@@ -228,7 +228,7 @@ angular.module('starter.controllers', [])
       //   $scope.meals[0].start.dateTime = new Date(onehBefore);
       //   break;
       default:
-        $scope.meals.splice(0,1);
+        noMeal(0);
     }
     
     // Lunch
@@ -243,7 +243,7 @@ angular.module('starter.controllers', [])
         $scope.meals[1].start.dateTime = new Date(onehBefore);
         break;
       default:
-        $scope.meals.splice(1,1);
+        noMeal(1);
     }
 
     // Dinner
@@ -271,8 +271,12 @@ angular.module('starter.controllers', [])
       //   $scope.meals[2].end.dateTime = new Date(twoh30After);
         break;
       default:
-        $scope.meals.splice(2,1);
+        noMeal(2);
     }
+  }
+
+  function noMeal(i){
+    scope.meals.splice(i,1);
   }
 
   function mealSnackOverlap(j,k){
