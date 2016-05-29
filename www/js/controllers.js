@@ -207,7 +207,7 @@ angular.module('starter.controllers', [])
     mealEnd.setYear(1993);
     mealEnd = mealEnd.getTime();
 
-    if(mealStart<=workoutEnd && mealEnd>=workoutStart){
+    if(mealStart<workoutEnd && mealEnd>workoutStart){
       bldNumbers[j]++;
     }
 
@@ -217,6 +217,7 @@ angular.module('starter.controllers', [])
   function switchCases(bldNumbers){
     // Breakfast
     switch (bldNumbers[0]) {
+      
       case 0:
         break;
       // case 1:
@@ -247,8 +248,10 @@ angular.module('starter.controllers', [])
 
     // Dinner
     switch(bldNumbers[2]) {
+      // 6:30-8:00
       case 0:
         break;
+      // 7:30-9:00
       case 1:
         $scope.meals[2].start.dateTime = new Date($scope.meals[2].start.dateTime);
         
@@ -257,6 +260,15 @@ angular.module('starter.controllers', [])
 
         $scope.meals[2].start.dateTime = new Date(onehAfter);
         $scope.meals[2].end.dateTime = new Date(twoh30After);
+      // // 
+      // case 2:
+      //   $scope.meals[2].start.dateTime = new Date($scope.meals[2].start.dateTime);
+        
+      //   var onehAfter = $scope.meals[2].start.dateTime.getTime() + (1*60*60*1000);
+      //   var twoh30After = $scope.meals[2].start.dateTime.getTime() + (2.5*60*60*1000);
+
+      //   $scope.meals[2].start.dateTime = new Date(onehAfter);
+      //   $scope.meals[2].end.dateTime = new Date(twoh30After);
         break;
       default:
         $scope.meals.splice(2,1);
