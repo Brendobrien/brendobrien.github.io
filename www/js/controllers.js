@@ -135,7 +135,7 @@ angular.module('starter.controllers', [])
 
     for(i = 0; i < $scope.workouts.length; i++){
       for(j = 0; j < $scope.meals.length; j++){
-        bldNumbers = workoutsnackOverlap(i,j,bldNumbers)
+        bldNumbers = workoutMealOverlap(i,j,bldNumbers)
       }
     }
 
