@@ -74,7 +74,7 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('workoutsListCtrl', function($scope, $state, $window, Workouts, Events, Meals, Snacks){
+.controller('workoutsListCtrl', function($scope, $state, auth, store, Workouts, Events, Meals, Snacks){
   // load factories 
   // workouts
   $scope.workouts = Workouts.wos();
@@ -126,7 +126,7 @@ angular.module('starter.controllers', [])
     var bldNumbers = [0, 0, 0];
     for(i = 0; i < $scope.workouts.length; i++){
       for(j = 0; j < $scope.meals.length; j++){
-        bldNumbers = workoutsnackOverlap(i,j,bldNumbers)
+        bldNumbers = workoutMealOverlap(i,j,bldNumbers)
       }
     }
 
@@ -179,7 +179,7 @@ angular.module('starter.controllers', [])
     }
   }
 
-  function workoutsnackOverlap(i,j,bldNumbers) {
+  function workoutMealOverlap(i,j,bldNumbers) {
     var workoutStart = new Date($scope.events[i].start.dateTime);
     var workoutEnd = new Date($scope.events[i].end.dateTime);
     var mealStart = new Date($scope.meals[j].start.dateTime);
@@ -553,7 +553,7 @@ angular.module('starter.controllers', [])
                   for(i = 0; i < $scope.events.length; i++){
                     postGAPI(i);
                   }
-                  // window.location.href = 'https://calendar.google.com/';
+                  window.location.href = 'https://calendar.google.com/';
                 })
                 .catch(function(parseErr) {
                     console.error(parseErr);
@@ -682,9 +682,18 @@ angular.module('starter.controllers', [])
     localStorage.removeItem("workouts");
   }
 
-  $scope.refreshPage = function(){
+  $scope.refreshWorkouts = function(){
+    localStorage.removeItem("workouts");
     document.location.reload(true);
   }
+
+  $scope.logout = function() {
+    auth.signout();
+    store.remove('token');
+    store.remove('profile');
+    store.remove('refreshToken');
+    $state.go('login', {}, {reload: true});
+  };
 
   function getGAPI() {
     // Just call the API as you'd do using $http
@@ -712,15 +721,4 @@ angular.module('starter.controllers', [])
       console.error("errored", err);
     });
   };
-
 })
-
-.controller('AccountCtrl', function($scope, auth, store, $state) {
-  $scope.logout = function() {
-    auth.signout();
-    store.remove('token');
-    store.remove('profile');
-    store.remove('refreshToken');
-    $state.go('login', {}, {reload: true});
-  };
-});
