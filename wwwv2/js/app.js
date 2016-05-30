@@ -48,9 +48,6 @@ angular.module('starter', ['ionic',
 
   .state('editWorkout',{
     url:"/editWorkout/:woId",
-    // params: {
-    //   id: null
-    // },
     templateUrl: "templates/editWorkout.html",
     controller: 'editWorkoutCtrl'
   })

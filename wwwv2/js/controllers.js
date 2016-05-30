@@ -28,8 +28,6 @@ angular.module('starter.controllers', [])
   });
 
   doAuth();
-
-
 })
 
 .controller('newWorkoutCtrl', function($scope, $state, Workouts) {
