@@ -122,25 +122,25 @@ angular.module('starter.controllers', [])
 
     mealDefaults();
 
-    // Which breakfast lunch and dinner?
-    var bldNumbers = [0, 0, 0];
-    for(i = 0; i < $scope.workouts.length; i++){
-      for(j = 0; j < $scope.meals.length; j++){
-        bldNumbers = workoutMealOverlap(i,j,bldNumbers)
-      }
-    }
+    // // Which breakfast lunch and dinner?
+    // var bldNumbers = [0, 0, 0];
+    // for(i = 0; i < $scope.workouts.length; i++){
+    //   for(j = 0; j < $scope.meals.length; j++){
+    //     bldNumbers = workoutMealOverlap(i,j,bldNumbers)
+    //   }
+    // }
 
-    console.log(bldNumbers);
-    switchCases(bldNumbers);
+    // console.log(bldNumbers);
+    // switchCases(bldNumbers);
 
-    for(i = 0; i < $scope.workouts.length; i++){
-      for(j = 0; j < $scope.meals.length; j++){
-        bldNumbers = workoutMealOverlap(i,j,bldNumbers)
-      }
-    }
+    // for(i = 0; i < $scope.workouts.length; i++){
+    //   for(j = 0; j < $scope.meals.length; j++){
+    //     bldNumbers = workoutMealOverlap(i,j,bldNumbers)
+    //   }
+    // }
 
-    console.log(bldNumbers);
-    switchCases(bldNumbers);
+    // console.log(bldNumbers);
+    // switchCases(bldNumbers);
 
     for(j = 0; j < $scope.meals.length; j++){
       for(k = 0; k < $scope.snacks.length; k++){
@@ -217,24 +217,27 @@ angular.module('starter.controllers', [])
   function switchCases(bldNumbers){
     // Breakfast
     switch (bldNumbers[0]) {
-      
+      // 9:00-10:00
       case 0:
         break;
-      // case 1:
-      //   $scope.meals[0].end.dateTime = new Date($scope.meals[0].start.dateTime);
+      // 8:00-9:00
+      case 1:
+        $scope.meals[0].end.dateTime = new Date($scope.meals[0].start.dateTime);
         
-      //   var onehBefore = $scope.meals[0].end.dateTime.getTime() - (1*60*60*1000);
+        var onehBefore = $scope.meals[0].end.dateTime.getTime() - (1*60*60*1000);
         
-      //   $scope.meals[0].start.dateTime = new Date(onehBefore);
-      //   break;
+        $scope.meals[0].start.dateTime = new Date(onehBefore);
+        break;
       default:
         noMeal(0);
     }
     
     // Lunch
     switch(bldNumbers[1]) {
+      // 1:00 - 2:00
       case 0:
         break;
+      // 12:00 - 1:00
       case 1:
         $scope.meals[1].end.dateTime = new Date($scope.meals[1].start.dateTime);
         
@@ -260,15 +263,6 @@ angular.module('starter.controllers', [])
 
         $scope.meals[2].start.dateTime = new Date(onehAfter);
         $scope.meals[2].end.dateTime = new Date(twoh30After);
-      // // 
-      // case 2:
-      //   $scope.meals[2].start.dateTime = new Date($scope.meals[2].start.dateTime);
-        
-      //   var onehAfter = $scope.meals[2].start.dateTime.getTime() + (1*60*60*1000);
-      //   var twoh30After = $scope.meals[2].start.dateTime.getTime() + (2.5*60*60*1000);
-
-      //   $scope.meals[2].start.dateTime = new Date(onehAfter);
-      //   $scope.meals[2].end.dateTime = new Date(twoh30After);
         break;
       default:
         noMeal(2);
