@@ -13,12 +13,7 @@ angular.module('brainbuild.controllers', [])
       store.set('profile', profile);
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
-      if(localStorage.workouts){
-        $state.go('workoutsList');
-      }
-      else {
-        $state.go('newWorkout');
-      }
+      $state.go('schedule');
     }, function(error) {
       console.log("There was an error logging in", error);
     });
@@ -29,4 +24,9 @@ angular.module('brainbuild.controllers', [])
   });
 
   doAuth();
+})
+
+.controller('ScheduleCtrl', function($scope, Events) {
+	$scope.events = Events.all();
+	console.log($scope.events);
 })

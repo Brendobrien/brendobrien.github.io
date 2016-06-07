@@ -1,5 +1,6 @@
 angular.module('brainbuild', ['ionic', 
   'brainbuild.controllers', 
+  'brainbuild.routes',
   'brainbuild.services',
   'auth0',
   'angular-storage',
@@ -19,23 +20,7 @@ angular.module('brainbuild', ['ionic',
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, authProvider,
-  jwtInterceptorProvider, $httpProvider) {
-
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
-  $stateProvider
-  .state('login', {
-    url: "/login",
-    templateUrl: "templates/login.html",
-    controller: 'LoginCtrl'
-  })
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
-
+.config(function(authProvider, jwtInterceptorProvider, $httpProvider) {
   // Configure Auth0
   authProvider.init({
     domain: AUTH0_DOMAIN,
@@ -60,7 +45,6 @@ angular.module('brainbuild', ['ionic',
   }
 
   $httpProvider.interceptors.push('jwtInterceptor');
-
 })
 
 .run(function($rootScope, auth, store) {
