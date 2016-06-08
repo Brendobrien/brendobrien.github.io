@@ -5,7 +5,7 @@ angular.module('brainbuild.services', [])
 		var googleEvents = JSON.parse(localStorage.googleEvents);
 	}
 	else {
-		var googleEvents = [{summary:"yes"}];
+		var googleEvents = [];
 	}
 
 	return {

@@ -3,24 +3,21 @@
 		<div class="list card" ng-repeat="googleEvent in googleEvents">
             <div class="item item-divider">{{ googleEvent.summary }}</div>
             <div class="item item-body">
-                <!-- <div>
+                <div>
                     <div>
                         <div>
-                            <i class="icon ion-android-calendar" style="margin-right: 5px"></i>Start Date: {{ googleEvent.startTime | date:'MMMM d, y'}}
+                            <i class="icon ion-android-calendar" style="margin-right: 5px"></i>Start Date: {{ googleEvent.start.dateTime | date:'MMMM d, y'}}
                         </div>
                         <div>
-                            <i class="icon ion-android-calendar" style="margin-right: 5px"></i>End Date: {{ googleEvent.endDate | date:'MMMM d, y'}}
-                        </div>
-                        <div>
-                            <i class="icon ion-android-time" style="margin-right: 4px"></i>{{ googleEvent.startTime | date:'shortTime'}} - {{ googleEvent.endTime | date:'shortTime'}}
+                            <i class="icon ion-android-time" style="margin-right: 4px"></i>{{ googleEvent.start.dateTime | date:'shortTime'}} - {{ googleEvent.end.dateTime | date:'shortTime'}}
                         </div>
                         <div>
                             <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly on 
-                            <div ng-show="rep.checked" id="repeat-day" ng-repeat="rep in googleEvent.repeat">{{ rep.text }} </div>
+                            <div id="repeat-day">{{ googleEvent.dayRepeat }} </div>
                         </div>
                     </div>
                 </div>
-                <div id="editWorkoutEvents-button-bar2" class=" button-bar ">
+                <!-- <div id="editWorkoutEvents-button-bar2" class=" button-bar ">
                     <button ng-click="editWorkout(googleEvent.woId)"  id="editWorkoutEvents-button65" class=" button button-dark  button-block button-outline icon ion-edit "></button>
                     <button ng-click="deleteWorkout(googleEvent.woId)" id="editWorkoutEvents-button66" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>
                 </div> -->

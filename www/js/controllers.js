@@ -90,9 +90,11 @@ angular.module('brainbuild.controllers', [])
 
     for(var i = 0; i < data.items.length; i++){
       var title = data.items[i].summary.toString();
-      var endTitle = title.substr(title.lastIndexOf("(")+1);
+      var endTitle = title.search("(Brainbuild)");
 
-      if(endTitle == "Brainbuild)"){
+      console.log(endTitle)
+
+      if(endTitle >= 0){
         var calendarId = data.items[i].id;
         console.log(calendarId);
       }
@@ -145,11 +147,29 @@ angular.module('brainbuild.controllers', [])
   function parseEvents(data){
     $scope.$apply(function(){
       $scope.googleEvents = data.items
-      localStorage.googleEvents = JSON.stringify(data.items);
     })
 
     for(var i = 0; i < $scope.googleEvents.length; i++){
-      var title = $scope.googleEvents[i].summary;
+      // console.log($scope.googleEvents[i].summary);
+      if($scope.googleEvents[i].recurrence){
+        var dayIndex = $scope.googleEvents[i].recurrence[0].search("BYDAY=")
+        // console.log(dayIndex);
+
+        if(dayIndex>=0 && dayIndex){
+          // console.log($scope.googleEvents[i].recurrence[0].substring(dayIndex+6));
+          $scope.googleEvents[i].dayRepeat = $scope.googleEvents[i].recurrence[0].substring(dayIndex+6);
+        }
+      }
+      else{
+        $scope.googleEvents[i].dayRepeat = "";
+      } 
+
+      console.log($scope.googleEvents[i].dayRepeat);
     }
+
+    $scope.$apply(function(){
+      $scope.googleEvents = $scope.googleEvents;
+      localStorage.googleEvents = JSON.stringify(data.items);
+    });
   }
 })
