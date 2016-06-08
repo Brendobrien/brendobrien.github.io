@@ -11,10 +11,11 @@ angular.module('brainbuild.routes', [])
 	.state('sidemenu',{
 		url: "/sidemenu",
 		templateUrl: "templates/sidemenu.html",
+		controller: "SidemenuCtrl",
 		abstract: true
 	})
 
-	.state('schedule', {
+	.state('sidemenu.schedule', {
 		url: "/schedule",
 		views: {
 			'side-menu-bb': {

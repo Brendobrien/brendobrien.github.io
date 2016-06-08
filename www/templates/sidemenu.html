@@ -9,5 +9,19 @@
 		<ion-nav-view name="side-menu-bb"></ion-nav-view>
 	</ion-side-menu-content>
 	<ion-side-menu side="left" id="side-menu-bb">
+		<ion-header-bar class="bar-assertive">
+            <div class="title">Brainbuild</div>
+        </ion-header-bar>
+
+        <ion-content padding="true" class="side-menu-left has-header">
+			<ion-list>        
+	        	<ion-item class="item-icon-right" ui-sref="sidemenu.schedule" menu-close="">My Schedule
+                    <i class="icon ion-android-calendar"></i>
+                </ion-item>
+	        	<ion-item class="item-icon-right" ng-click="logout()" menu-close="">Sign Out
+	                <i class="icon ion-android-exit"></i>
+	            </ion-item>
+	        </ion-list>
+    	</ion-content>
 	</ion-side-menu>
 </ion-side-menus>

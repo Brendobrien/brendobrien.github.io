@@ -13,7 +13,7 @@ angular.module('brainbuild.controllers', [])
       store.set('profile', profile);
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
-      $state.go('schedule');
+      $state.go('sidemenu.schedule');
     }, function(error) {
       console.log("There was an error logging in", error);
     });
@@ -26,7 +26,130 @@ angular.module('brainbuild.controllers', [])
   doAuth();
 })
 
-.controller('ScheduleCtrl', function($scope, Events) {
-	$scope.events = Events.all();
-	console.log($scope.events);
+.controller('SidemenuCtrl', function($scope, auth, store, $state) {
+
+  $scope.logout = function() {
+    auth.signout();
+    store.remove('token');
+    store.remove('profile');
+    store.remove('refreshToken');
+    $state.go('login', {}, {reload: true});
+  };
+})
+
+.controller('ScheduleCtrl', function($scope, $state, GoogleEvents, IonicEvents) {
+  $scope.googleEvents = GoogleEvents.all();
+
+  $scope.getEvents = function(){
+    getGAPI();
+  };
+
+  function getGAPI() {
+    var person = JSON.parse(localStorage.getItem('profile'));
+    var token = person['identities'][0]['access_token'];
+
+    var header = new Headers();
+    header.append("Access-Control-Allow-Origin", "*");
+
+    fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token='+token, {
+      method: 'GET',
+      headers: header,
+      mode: 'cors',
+      cache: 'default',
+    })
+    .then(function(res) {
+      if (res.status === 200) {
+            res.json()
+                .then(function(data) {
+                    findBrainbuild(data);
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        } else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 200', data);
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+    })
+    .catch(function(err) {
+      console.error("errored", err);
+    });
+  };
+
+  function findBrainbuild(data) {
+    console.log(data);
+
+    for(var i = 0; i < data.items.length; i++){
+      var title = data.items[i].summary.toString();
+      var endTitle = title.substr(title.lastIndexOf("(")+1);
+
+      if(endTitle == "Brainbuild)"){
+        var calendarId = data.items[i].id;
+        console.log(calendarId);
+      }
+    }
+
+    listBrainbuildEvents(calendarId);
+  }
+
+  function listBrainbuildEvents(calendarId){
+    var person = JSON.parse(localStorage.getItem('profile'));
+    var token = person['identities'][0]['access_token'];
+
+    var header = new Headers();
+    header.append("Access-Control-Allow-Origin", "*");
+
+    fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/events?access_token='+token, {
+      method: 'GET',
+      headers: header,
+      mode: 'cors',
+      cache: 'default',
+    })
+    .then(function(res) {
+      if (res.status === 200) {
+            res.json()
+                .then(function(data) {
+                    parseEvents(data);
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        } else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 200', data);
+                    if (data.error.code === 401){
+                      $state.go('login');
+                    }
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+    })
+    .catch(function(err) {
+      console.error("errored", err);
+    });
+  }
+
+  function parseEvents(data){
+    $scope.$apply(function(){
+      $scope.googleEvents = data.items
+      localStorage.googleEvents = JSON.stringify(data.items);
+    })
+
+    for(var i = 0; i < $scope.googleEvents.length; i++){
+      var title = $scope.googleEvents[i].summary;
+    }
+  }
 })
