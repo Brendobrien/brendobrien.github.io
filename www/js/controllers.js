@@ -37,12 +37,15 @@ angular.module('brainbuild.controllers', [])
   };
 })
 
-.controller('ScheduleCtrl', function($scope, $state, GoogleEvents, IonicEvents) {
+.controller('ScheduleCtrl', function($scope, $state, GoogleEvents) {
   $scope.googleEvents = GoogleEvents.all();
+  $scope.date = GoogleEvents.date();
 
-  $scope.getEvents = function(){
-    getGAPI();
-  };
+  $scope.changeDate = function(){
+    
+  }
+
+  getGAPI();
 
   function getGAPI() {
     var person = JSON.parse(localStorage.getItem('profile'));
@@ -159,7 +162,7 @@ angular.module('brainbuild.controllers', [])
       } 
 
       if(data.items[i].summary.search(/practice/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button33" style="border-radius:15px 15px 15px 15px;" class="button button-calm button-block button-outline icon ion-waterdrop" href="#/sidemenu/snack"></a>';
+        data.items[i].button = '<a id="mySchedule-button33" style="border-radius:15px 15px 15px 15px;" class="button button-calm button-block button-outline icon ion-waterdrop" href="#/sidemenu/practice"></a>';
       }
 
       if(data.items[i].summary.search(/snack/i) >= 0 || data.items[i].summary.search(/carbohydrate/i) >= 0){
@@ -167,31 +170,71 @@ angular.module('brainbuild.controllers', [])
       }
 
       if(data.items[i].summary.search(/recovery/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button30" style="border-radius:15px 15px 15px 15px;" class=" button button-balanced  button-block button-outline icon ion-battery-low " href="#/sidemenu/snack"></a>';
+        data.items[i].button = '<a id="mySchedule-button30" style="border-radius:15px 15px 15px 15px;" class=" button button-balanced  button-block button-outline icon ion-battery-low " href="#/sidemenu/recovery"></a>';
       }
 
       if(data.items[i].summary.search(/sleep/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button17" style="border-radius:15px 15px 15px 15px;" class=" button button-positive  button-block button-outline icon ion-ios-moon " href="#/sidemenu/snack"></a>';
+        data.items[i].button = '<a id="mySchedule-button17" style="border-radius:15px 15px 15px 15px;" class=" button button-positive  button-block button-outline icon ion-ios-moon " href="#/sidemenu/sleep"></a>';
       }
 
       if(data.items[i].summary.search(/breakfast/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/snack"></a>';
+        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
       }
 
       if(data.items[i].summary.search(/lunch/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/snack"></a>';
+        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
       }
 
       if(data.items[i].summary.search(/dinner/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/snack"></a>';
+        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
       }
 
-      console.log(data.items[i].dayRepeat);
+      dayCases(data.items, i);
+
+      if(data.items[i].start.dateTime){
+        var date = new Date(data.items[i].start.dateTime)
+
+        // this is cool: need a common day to compare these values
+        // so I chose December 20, 1993, my birthday
+        date.setDate(20);
+        date.setMonth(11);
+        date.setYear(1993);
+        date = date.getTime();
+
+        console.log(date);
+
+        data.items[i].timeOfDay = date;
+      }
     }
 
     $scope.$apply(function(){
       $scope.googleEvents = data.items;
       localStorage.googleEvents = JSON.stringify(data.items);
     });
+  }
+
+  function dayCases(data, i){
+    switch ($scope.date.getDay()) {
+      // 9:00-10:00
+      case 3:
+        if(data[i].dayRepeat.search("WE") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          // data[i].visible = false;
+          data[i].visible = false;
+        }
+        break;
+      case 4:
+        if(data[i].dayRepeat.search("TH") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          data[i].visible = false;
+        }
+        break;
+      default:
+        data[i].visible = false;
+    }
   }
 })

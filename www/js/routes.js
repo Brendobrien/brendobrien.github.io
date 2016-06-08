@@ -34,6 +34,42 @@ angular.module('brainbuild.routes', [])
 		}
 	})
 
+	.state('sidemenu.practice', {
+		url: "/practice",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/practice.html",
+			}
+		}
+	})
+
+	.state('sidemenu.recovery', {
+		url: "/recovery",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/recovery.html",
+			}
+		}
+	})
+
+	.state('sidemenu.meal', {
+		url: "/meal",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/meal.html",
+			}
+		}
+	})
+
+	.state('sidemenu.sleep', {
+		url: "/sleep",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/sleep.html",
+			}
+		}
+	})
+
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/login');
 })

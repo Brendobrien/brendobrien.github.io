@@ -8,19 +8,19 @@ angular.module('brainbuild.services', [])
 		var googleEvents = [];
 	}
 
+	if(localStorage.date){
+		var date = JSON.parse(localStorage.date);
+	}
+	else {
+		var date = new Date();
+	}
+
 	return {
 		all: function(){
 			return googleEvents;
-		}
-	}
-})
-
-.factory('IonicEvents', function(){
-	var ionicEvents = [];
-
-	return {
-		all: function(){
-			return ionicEvents;
+		},
+		date: function(){
+			return date;
 		}
 	}
 })

@@ -1,6 +1,16 @@
 <ion-view title="My Schedule" hide-back-button="true">
 	<ion-content padding="true" class="has-header">
-		<div class="list card" ng-repeat="googleEvent in googleEvents">
+        <div class="spacer" style="width: 297.333px; height: 1.66667px;"></div>
+        <!-- <button id="mySchedule-button28" style="font-weight:600;" class="button button-dark button-large button-block button-clear"> -->
+        <button id="mySchedule-button28" style="font-weight:600;" class="button button-dark button-large button-block button-clear" data-toggle="datepicker">{{ date | date:'fullDate' }}</button>
+        <!-- <label class="item item-input " id="newWorkoutEvent-input12" name="Start Date">
+            <span class="input-label">Date</span>
+            <input type="date" placeholder="" ng-model="date">
+        </label>
+        <br>
+        <p> Date Chosen: {{ date | date:'MM/dd/yyyy' }} </p> -->
+
+		<div class="list card" ng-repeat="googleEvent in googleEvents | filter:{visible:true} | orderBy:'timeOfDay'">
             <div class="item item-divider">{{ googleEvent.summary }}</div>
             <div class="item item-body">
                 <div>
@@ -27,6 +37,6 @@
         </div>
 
 
-        <a ng-click="getEvents()" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Get Events</a>
+        <!-- <a ng-click="getEvents()" style="font-weight:500;border-radius:15px 15px 15px 15px;" class=" button button-assertive  button-block ">Get Events</a> -->
 	</ion-content>
 </ion-view>
