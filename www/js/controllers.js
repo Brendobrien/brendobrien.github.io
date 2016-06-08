@@ -86,17 +86,12 @@ angular.module('brainbuild.controllers', [])
   };
 
   function findBrainbuild(data) {
-    console.log(data);
-
     for(var i = 0; i < data.items.length; i++){
       var title = data.items[i].summary.toString();
       var endTitle = title.search("(Brainbuild)");
 
-      console.log(endTitle)
-
       if(endTitle >= 0){
         var calendarId = data.items[i].id;
-        console.log(calendarId);
       }
     }
 
@@ -145,30 +140,57 @@ angular.module('brainbuild.controllers', [])
   }
 
   function parseEvents(data){
-    $scope.$apply(function(){
-      $scope.googleEvents = data.items
-    })
-
-    for(var i = 0; i < $scope.googleEvents.length; i++){
-      // console.log($scope.googleEvents[i].summary);
-      if($scope.googleEvents[i].recurrence){
-        var dayIndex = $scope.googleEvents[i].recurrence[0].search("BYDAY=")
+    for(var i = 0; i < data.items.length; i++){
+      // console.log(data.items[i].summary);
+      if(data.items[i].recurrence){
+        var dayIndex = data.items[i].recurrence[0].search("BYDAY=")
         // console.log(dayIndex);
 
         if(dayIndex>=0 && dayIndex){
-          // console.log($scope.googleEvents[i].recurrence[0].substring(dayIndex+6));
-          $scope.googleEvents[i].dayRepeat = $scope.googleEvents[i].recurrence[0].substring(dayIndex+6);
+          // console.log(data.items[i].recurrence[0].substring(dayIndex+6));
+          data.items[i].dayRepeat = data.items[i].recurrence[0].substring(dayIndex+6);
+        }
+        else{
+          data.items[i].dayRepeat = "";
         }
       }
       else{
-        $scope.googleEvents[i].dayRepeat = "";
+        data.items[i].dayRepeat = "";
       } 
 
-      console.log($scope.googleEvents[i].dayRepeat);
+      if(data.items[i].summary.search(/practice/i) >= 0){
+        data.items[i].button = '<a id="mySchedule-button33" style="border-radius:15px 15px 15px 15px;" class="button button-calm button-block button-outline icon ion-waterdrop" href="#/sidemenu/snack"></a>';
+      }
+
+      if(data.items[i].summary.search(/snack/i) >= 0 || data.items[i].summary.search(/carbohydrate/i) >= 0){
+        data.items[i].button = '<a id="mySchedule-button13" style="border-radius:15px 15px 15px 15px;" class="button button-energized  button-block button-outline icon ion-ios-nutrition" href="#/sidemenu/snack"></a>';
+      }
+
+      if(data.items[i].summary.search(/recovery/i) >= 0){
+        data.items[i].button = '<a id="mySchedule-button30" style="border-radius:15px 15px 15px 15px;" class=" button button-balanced  button-block button-outline icon ion-battery-low " href="#/sidemenu/snack"></a>';
+      }
+
+      if(data.items[i].summary.search(/sleep/i) >= 0){
+        data.items[i].button = '<a id="mySchedule-button17" style="border-radius:15px 15px 15px 15px;" class=" button button-positive  button-block button-outline icon ion-ios-moon " href="#/sidemenu/snack"></a>';
+      }
+
+      if(data.items[i].summary.search(/breakfast/i) >= 0){
+        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/snack"></a>';
+      }
+
+      if(data.items[i].summary.search(/lunch/i) >= 0){
+        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/snack"></a>';
+      }
+
+      if(data.items[i].summary.search(/dinner/i) >= 0){
+        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/snack"></a>';
+      }
+
+      console.log(data.items[i].dayRepeat);
     }
 
     $scope.$apply(function(){
-      $scope.googleEvents = $scope.googleEvents;
+      $scope.googleEvents = data.items;
       localStorage.googleEvents = JSON.stringify(data.items);
     });
   }

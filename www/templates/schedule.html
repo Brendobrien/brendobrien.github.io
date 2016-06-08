@@ -13,10 +13,12 @@
                         </div>
                         <div>
                             <i class="icon ion-refresh" style="margin-right: 3px"></i>Repeats weekly on 
-                            <div id="repeat-day">{{ googleEvent.dayRepeat }} </div>
+                            <div id ="repeat-day">{{ googleEvent.dayRepeat }} </div>
                         </div>
                     </div>
                 </div>
+                <div ng-bind-html="googleEvent.button">
+                </div ng-bind-html>
                 <!-- <div id="editWorkoutEvents-button-bar2" class=" button-bar ">
                     <button ng-click="editWorkout(googleEvent.woId)"  id="editWorkoutEvents-button65" class=" button button-dark  button-block button-outline icon ion-edit "></button>
                     <button ng-click="deleteWorkout(googleEvent.woId)" id="editWorkoutEvents-button66" class=" button button-dark  button-block button-outline icon ion-android-delete "></button>

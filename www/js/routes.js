@@ -25,6 +25,15 @@ angular.module('brainbuild.routes', [])
 		}
 	})
 
+	.state('sidemenu.snack', {
+		url: "/snack",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/snack.html",
+			}
+		}
+	})
+
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/login');
 })
