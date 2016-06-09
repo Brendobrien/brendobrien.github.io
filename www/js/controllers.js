@@ -27,7 +27,7 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('SidemenuCtrl', function($scope, auth, store, $state) {
-
+  // logout
   $scope.logout = function() {
     auth.signout();
     store.remove('token');
@@ -38,30 +38,33 @@ angular.module('brainbuild.controllers', [])
 })
 
 .controller('ScheduleCtrl', function($scope, $state, GoogleEvents, ionicDatePicker) {
+  // factory retrieval
   $scope.googleEvents = GoogleEvents.all();
   $scope.date = GoogleEvents.date();
 
-  $scope.changeDate = function(){
-    
-  }
+  // date picker object
+  var ipObj1 = {
+    callback: function (val) {  //Mandatory
+      $scope.date = new Date(val);
 
-   var ipObj1 = {
-      callback: function (val) {  //Mandatory
-        $scope.date = new Date(val);
-        console.log($scope.date.getDay());
-        for(var i = 0; i < $scope.googleEvents.length; i++){
-          dayCases($scope.googleEvents, i);
-        }
-      },
-      mondayFirst: false,
-    };
+      for(var i = 0; i < $scope.googleEvents.length; i++){
+        dayCases($scope.googleEvents, i);
+      }
 
-    $scope.openDatePicker = function(){
-      ionicDatePicker.openDatePicker(ipObj1);
-    };
+      localStorage.googleEvents = JSON.stringify($scope.googleEvents);
+    },
+    mondayFirst: false,
+  };
 
+  // date picker function
+  $scope.openDatePicker = function(){
+    ionicDatePicker.openDatePicker(ipObj1);
+  };
+
+  // retrieve google calendar events and post them on the screen
   getGAPI();
 
+  // calendar list retrieval
   function getGAPI() {
     var person = JSON.parse(localStorage.getItem('profile'));
     var token = person['identities'][0]['access_token'];
@@ -103,6 +106,7 @@ angular.module('brainbuild.controllers', [])
     });
   };
 
+  // find (Brainbuild) calendar
   function findBrainbuild(data) {
     for(var i = 0; i < data.items.length; i++){
       var title = data.items[i].summary.toString();
@@ -116,6 +120,7 @@ angular.module('brainbuild.controllers', [])
     listBrainbuildEvents(calendarId);
   }
 
+  // brainbuild calendar events retrieval
   function listBrainbuildEvents(calendarId){
     var person = JSON.parse(localStorage.getItem('profile'));
     var token = person['identities'][0]['access_token'];
@@ -157,143 +162,217 @@ angular.module('brainbuild.controllers', [])
     });
   }
 
+  // main parsing function
   function parseEvents(data){
+    // iterate through events
     for(var i = 0; i < data.items.length; i++){
-      // console.log(data.items[i].summary);
-      if(data.items[i].recurrence){
-        var dayIndex = data.items[i].recurrence[0].search("BYDAY=")
-        // console.log(dayIndex);
+      // real event
+      if(data.items[i].summary){
+        // .dayRepeat
+        assignDayRepeat(data, i); 
 
-        if(dayIndex>=0 && dayIndex){
-          // console.log(data.items[i].recurrence[0].substring(dayIndex+6));
-          data.items[i].dayRepeat = data.items[i].recurrence[0].substring(dayIndex+6);
-        }
-        else{
-          data.items[i].dayRepeat = "";
-        }
+        // .button
+        assignButton(data, i);
+
+        // .timeOfDay
+        assignTiming(data, i);
+
+        // .visible
+        dayCases(data.items, i);
       }
-      else{
-        data.items[i].dayRepeat = "";
-      } 
-
-      if(data.items[i].summary.search(/practice/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button33" style="border-radius:15px 15px 15px 15px;" class="button button-calm button-block button-outline icon ion-waterdrop" href="#/sidemenu/practice"></a>';
-      }
-
-      if(data.items[i].summary.search(/snack/i) >= 0 || data.items[i].summary.search(/carbohydrate/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button13" style="border-radius:15px 15px 15px 15px;" class="button button-energized  button-block button-outline icon ion-ios-nutrition" href="#/sidemenu/snack"></a>';
-      }
-
-      if(data.items[i].summary.search(/recovery/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button30" style="border-radius:15px 15px 15px 15px;" class=" button button-balanced  button-block button-outline icon ion-battery-low " href="#/sidemenu/recovery"></a>';
-      }
-
-      if(data.items[i].summary.search(/sleep/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button17" style="border-radius:15px 15px 15px 15px;" class=" button button-positive  button-block button-outline icon ion-ios-moon " href="#/sidemenu/sleep"></a>';
-      }
-
-      if(data.items[i].summary.search(/breakfast/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
-      }
-
-      if(data.items[i].summary.search(/lunch/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
-      }
-
-      if(data.items[i].summary.search(/dinner/i) >= 0){
-        data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
-      }
-
-      dayCases(data.items, i);
-
-      if(data.items[i].start.dateTime){
-        var date = new Date(data.items[i].start.dateTime)
-
-        // this is cool: need a common day to compare these values
-        // so I chose December 20, 1993, my birthday
-        date.setDate(20);
-        date.setMonth(11);
-        date.setYear(1993);
-        date = date.getTime();
-
-        data.items[i].timeOfDay = date;
+      else {
+        // canceled event
+        console.log(data.items[i]);
       }
     }
 
+    // apply to page
     $scope.$apply(function(){
       $scope.googleEvents = data.items;
       localStorage.googleEvents = JSON.stringify(data.items);
     });
   }
 
+  // .dayRepeat for recurring events
+  function assignDayRepeat(data, i){
+    if(data.items[i].recurrence){
+      var dayIndex = data.items[i].recurrence[0].search("BYDAY=")
+
+      if(dayIndex>=0 && dayIndex){
+        data.items[i].dayRepeat = data.items[i].recurrence[0].substring(dayIndex+6);
+      }
+      else{
+        data.items[i].dayRepeat = "";
+      }
+    }
+    else{
+      data.items[i].dayRepeat = "";
+    }
+  }
+
+  // .button for more information
+  function assignButton(data, i){
+    if(data.items[i].summary.search(/practice/i) >= 0){
+      data.items[i].button = '<a id="mySchedule-button33" style="border-radius:15px 15px 15px 15px;" class="button button-calm button-block button-outline icon ion-waterdrop" href="#/sidemenu/practice"></a>';
+    }
+
+    if(data.items[i].summary.search(/snack/i) >= 0 || data.items[i].summary.search(/carbohydrate/i) >= 0){
+      data.items[i].button = '<a id="mySchedule-button13" style="border-radius:15px 15px 15px 15px;" class="button button-energized  button-block button-outline icon ion-ios-nutrition" href="#/sidemenu/snack"></a>';
+    }
+
+    if(data.items[i].summary.search(/recovery/i) >= 0){
+      data.items[i].button = '<a id="mySchedule-button30" style="border-radius:15px 15px 15px 15px;" class=" button button-balanced  button-block button-outline icon ion-battery-low " href="#/sidemenu/recovery"></a>';
+    }
+
+    if(data.items[i].summary.search(/sleep/i) >= 0){
+      data.items[i].button = '<a id="mySchedule-button17" style="border-radius:15px 15px 15px 15px;" class=" button button-positive  button-block button-outline icon ion-ios-moon " href="#/sidemenu/sleep"></a>';
+    }
+
+    if(data.items[i].summary.search(/breakfast/i) >= 0){
+      data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
+    }
+
+    if(data.items[i].summary.search(/lunch/i) >= 0){
+      data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
+    }
+
+    if(data.items[i].summary.search(/dinner/i) >= 0){
+      data.items[i].button = '<a id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
+    }
+  }
+
+  // .timeOfDay to order the events properly
+  function assignTiming(data, i){
+    if(data.items[i].start.dateTime){
+      var date = new Date(data.items[i].start.dateTime)
+
+      // this is cool: need a common day to compare these values
+      // so I chose December 20, 1993, my birthday
+      date.setDate(20);
+      date.setMonth(11);
+      date.setYear(1993);
+      date = date.getTime();
+
+      data.items[i].timeOfDay = date;
+    }
+  }
+  
+  // assign visibility based on day of week
   function dayCases(data, i){
     if(data[i].recurrence){
-      switch ($scope.date.getDay()) {
-        // 9:00-10:00
-        case 0:
-          if(data[i].recurrence[0].search("BYDAY=SU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-            console.log(data[i].summary)
-            console.log(data[i].recurrence[0])
-            data[i].visible = true;
-          }
-          else {
-            // data[i].visible = false;
-            data[i].visible = false;
-          }
-          break;
-        case 1:
-          if(data[i].dayRepeat.search("MO") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-            data[i].visible = true;
-          }
-          else {
-            // data[i].visible = false;
-            data[i].visible = false;
-          }
-          break;
-        case 2:
-          if(data[i].dayRepeat.search("TU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-            data[i].visible = true;
-          }
-          else {
-            // data[i].visible = false;
-            data[i].visible = false;
-          }
-          break;
-        case 3:
-          if(data[i].dayRepeat.search("WE") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-            data[i].visible = true;
-          }
-          else {
-            // data[i].visible = false;
-            data[i].visible = false;
-          }
-          break;
-        case 4:
-          if(data[i].dayRepeat.search("TH") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-            data[i].visible = true;
-          }
-          else {
-            data[i].visible = false;
-          }
-          break;
-        case 5:
-          if(data[i].dayRepeat.search("FR") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-            data[i].visible = true;
-          }
-          else {
-            data[i].visible = false;
-          }
-          break;
-        case 6:
-          if(data[i].dayRepeat.search("SA") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-            data[i].visible = true;
-          }
-          else {
-            data[i].visible = false;
-          }
-          break;
-        default:
+      repeatDays(data,i);
+
+      if(data[i].recurrence[0].search("UNTIL=") >= 0){
+        checkEndDate(data,i);
+      }
+    }
+    else {
+      nonrepeatDays(data,i);
+    }
+  }
+
+  // recurring event visibility
+  function repeatDays(data, i){
+    switch ($scope.date.getDay()) {
+      // 9:00-10:00
+      case 0:
+        if(data[i].recurrence[0].search("BYDAY=SU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          // data[i].visible = false;
           data[i].visible = false;
+        }
+        break;
+      case 1:
+        if(data[i].dayRepeat.search("MO") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          // data[i].visible = false;
+          data[i].visible = false;
+        }
+        break;
+      case 2:
+        if(data[i].dayRepeat.search("TU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          // data[i].visible = false;
+          data[i].visible = false;
+        }
+        break;
+      case 3:
+        if(data[i].dayRepeat.search("WE") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          // data[i].visible = false;
+          data[i].visible = false;
+        }
+        break;
+      case 4:
+        if(data[i].dayRepeat.search("TH") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){      
+          data[i].visible = true;
+        }
+        else {
+          data[i].visible = false;
+        }
+        break;
+      case 5:
+        if(data[i].dayRepeat.search("FR") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          data[i].visible = false;
+        }
+        break;
+      case 6:
+        if(data[i].dayRepeat.search("SA") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+          data[i].visible = true;
+        }
+        else {
+          data[i].visible = false;
+        }
+        break;
+      default:
+        data[i].visible = false;
+    }
+  }
+
+  // recurring events with end dates
+  function checkEndDate(data, i){
+    var until = data[i].recurrence[0].search("UNTIL=");
+    var end = data[i].recurrence[0].substring(until+6, until+14);
+    var endDate = new Date(end.substring(0,4), (end.substring(4,6)-1), (parseInt(end.substring(6,8))+1));
+
+    if(endDate.getTime()<$scope.date.getTime()){
+      data[i].visible = false;
+    }
+  }
+
+  // non-recurring event visibility
+  function nonrepeatDays(data, i){
+    if(data[i].summary){
+      if(data[i].start.toDateStringime){
+        var singleEvent = new Date(data[i].start.dateTime);
+        var day = "inday";
+      }
+      else {
+        var singleEvent = new Date(data[i].end.date);
+        var day = "allday";
+      }
+      if(singleEvent.toDateString()==$scope.date.toDateString()){
+        data[i].visible = true;
+
+        if(day=="allday"){
+          data[i].timeOfDay = 0;
+          data[i].start.dateTime = "All";
+          data[i].end.dateTime = "Day"; 
+        }
+      }
+      else {
+        data[i].visible = false;
       }
     }
     else {
