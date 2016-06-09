@@ -4,7 +4,8 @@ angular.module('brainbuild', ['ionic',
   'brainbuild.services',
   'auth0',
   'angular-storage',
-  'angular-jwt'])
+  'angular-jwt',
+  'ionic-datepicker'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

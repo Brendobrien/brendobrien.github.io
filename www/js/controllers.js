@@ -37,13 +37,28 @@ angular.module('brainbuild.controllers', [])
   };
 })
 
-.controller('ScheduleCtrl', function($scope, $state, GoogleEvents) {
+.controller('ScheduleCtrl', function($scope, $state, GoogleEvents, ionicDatePicker) {
   $scope.googleEvents = GoogleEvents.all();
   $scope.date = GoogleEvents.date();
 
   $scope.changeDate = function(){
     
   }
+
+   var ipObj1 = {
+      callback: function (val) {  //Mandatory
+        $scope.date = new Date(val);
+        console.log($scope.date.getDay());
+        for(var i = 0; i < $scope.googleEvents.length; i++){
+          dayCases($scope.googleEvents, i);
+        }
+      },
+      mondayFirst: false,
+    };
+
+    $scope.openDatePicker = function(){
+      ionicDatePicker.openDatePicker(ipObj1);
+    };
 
   getGAPI();
 
@@ -201,8 +216,6 @@ angular.module('brainbuild.controllers', [])
         date.setYear(1993);
         date = date.getTime();
 
-        console.log(date);
-
         data.items[i].timeOfDay = date;
       }
     }
@@ -214,27 +227,77 @@ angular.module('brainbuild.controllers', [])
   }
 
   function dayCases(data, i){
-    switch ($scope.date.getDay()) {
-      // 9:00-10:00
-      case 3:
-        if(data[i].dayRepeat.search("WE") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          // data[i].visible = false;
+    if(data[i].recurrence){
+      switch ($scope.date.getDay()) {
+        // 9:00-10:00
+        case 0:
+          if(data[i].recurrence[0].search("BYDAY=SU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+            console.log(data[i].summary)
+            console.log(data[i].recurrence[0])
+            data[i].visible = true;
+          }
+          else {
+            // data[i].visible = false;
+            data[i].visible = false;
+          }
+          break;
+        case 1:
+          if(data[i].dayRepeat.search("MO") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+            data[i].visible = true;
+          }
+          else {
+            // data[i].visible = false;
+            data[i].visible = false;
+          }
+          break;
+        case 2:
+          if(data[i].dayRepeat.search("TU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+            data[i].visible = true;
+          }
+          else {
+            // data[i].visible = false;
+            data[i].visible = false;
+          }
+          break;
+        case 3:
+          if(data[i].dayRepeat.search("WE") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+            data[i].visible = true;
+          }
+          else {
+            // data[i].visible = false;
+            data[i].visible = false;
+          }
+          break;
+        case 4:
+          if(data[i].dayRepeat.search("TH") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+            data[i].visible = true;
+          }
+          else {
+            data[i].visible = false;
+          }
+          break;
+        case 5:
+          if(data[i].dayRepeat.search("FR") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+            data[i].visible = true;
+          }
+          else {
+            data[i].visible = false;
+          }
+          break;
+        case 6:
+          if(data[i].dayRepeat.search("SA") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
+            data[i].visible = true;
+          }
+          else {
+            data[i].visible = false;
+          }
+          break;
+        default:
           data[i].visible = false;
-        }
-        break;
-      case 4:
-        if(data[i].dayRepeat.search("TH") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          data[i].visible = false;
-        }
-        break;
-      default:
-        data[i].visible = false;
+      }
+    }
+    else {
+      data[i].visible = false;
     }
   }
 })
