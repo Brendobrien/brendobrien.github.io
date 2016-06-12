@@ -5,7 +5,8 @@ angular.module('brainbuild', ['ionic',
   'auth0',
   'angular-storage',
   'angular-jwt',
-  'ionic-datepicker'])
+  'ionic-datepicker',
+  'angulartics', 'angulartics.mixpanel'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

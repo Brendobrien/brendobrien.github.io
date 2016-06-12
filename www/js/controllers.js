@@ -41,10 +41,6 @@ angular.module('brainbuild.controllers', [])
   // factory retrieval
   $scope.googleEvents = GoogleEvents.all();
   $scope.date = GoogleEvents.date();
-  $scope.listCanSwipe = true;
-
-  $scope.title = '<button id="mySchedule-button28" style="font-weight:600;" class="button button-dark button-large button-block button-clear" ng-click="openDatePicker()">{{ date | date:"fullDate" }}</button>';
-  var email = JSON.parse(localStorage.profile).email;
 
   // mixpanel.track("Practice Button", {email:email});
 
@@ -188,7 +184,6 @@ angular.module('brainbuild.controllers', [])
       }
       else {
         // canceled event
-        console.log(data.items[i]);
       }
     }
 
@@ -225,42 +220,49 @@ angular.module('brainbuild.controllers', [])
       data.items[i].button = '<a class="Practice Button" id="mySchedule-button33" style="border-radius:15px 15px 15px 15px;" class="button button-calm button-block button-outline icon ion-waterdrop" href="#/sidemenu/practice"></a>';
       data.items[i].color = '#4986e7';
       data.items[i].page = '#/sidemenu/practice';
+      data.items[i].type = 'Practice';
     }
 
     if(data.items[i].summary.search(/snack/i) >= 0 || data.items[i].summary.search(/carbohydrate/i) >= 0){
       data.items[i].button = '<a class="Snack Button" id="mySchedule-button13" style="border-radius:15px 15px 15px 15px;" class="button button-energized  button-block button-outline icon ion-ios-nutrition" href="#/sidemenu/snack"></a>';
       data.items[i].color = '#ffb878';
       data.items[i].page = '#/sidemenu/snack';
+      data.items[i].type = 'Snack';
      }
 
     if(data.items[i].summary.search(/recovery/i) >= 0){
       data.items[i].button = '<a class="Recovery Button" id="mySchedule-button30" style="border-radius:15px 15px 15px 15px;" class=" button button-balanced  button-block button-outline icon ion-battery-low " href="#/sidemenu/recovery"></a>';
       data.items[i].color = '#ffb878';
       data.items[i].page = '#/sidemenu/recovery';
+      data.items[i].type = 'Recovery';
     }
 
     if(data.items[i].summary.search(/sleep/i) >= 0){
       data.items[i].button = '<a class="Sleep Button" id="mySchedule-button17" style="border-radius:15px 15px 15px 15px;" class=" button button-positive  button-block button-outline icon ion-ios-moon " href="#/sidemenu/sleep"></a>';
       data.items[i].color = '#e1e1e1';
       data.items[i].page = '#/sidemenu/sleep';
+      data.items[i].type = 'Sleep';
     }
 
     if(data.items[i].summary.search(/breakfast/i) >= 0){
       data.items[i].button = '<a class="Breakfast Button" id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
       data.items[i].color = '#dc2127';
       data.items[i].page = '#/sidemenu/meal';
+      data.items[i].type = 'Breakfast';
     }
 
     if(data.items[i].summary.search(/lunch/i) >= 0){
       data.items[i].button = '<a class="Lunch Button" id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
       data.items[i].color = '#dc2127';
       data.items[i].page = '#/sidemenu/meal';
+      data.items[i].type = 'Lunch';
     }
 
     if(data.items[i].summary.search(/dinner/i) >= 0){
       data.items[i].button = '<a class="Dinner Button" id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/meal"></a>';
       data.items[i].color = '#dc2127';
       data.items[i].page = '#/sidemenu/meal';
+      data.items[i].type = 'Dinner';
     }
   }
 

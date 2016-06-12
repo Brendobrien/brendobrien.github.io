@@ -9,7 +9,7 @@
                 <div class="item-text-center item-text-wrap">
                     {{ googleEvent.start.dateTime | date:'shortTime'}} - {{ googleEvent.end.dateTime | date:'shortTime'}}
                 </div>
-                <a href="{{ googleEvent.page }}"> 
+                <a analytics-on="click" analytics-event="{{ googleEvent.type }}" analytics-category="Advice" href="{{ googleEvent.page }}"> 
                 <i style="color: {{googleEvent.color}}" class="icon ion-android-arrow-dropright-circle"></i> </a>
             </ion-item>
             </ion-list>
