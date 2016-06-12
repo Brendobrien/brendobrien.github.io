@@ -1,19 +1,9 @@
 angular.module('brainbuild.services', [])
 
 .factory('GoogleEvents', function(){
-	if(localStorage.googleEvents){
-		var googleEvents = JSON.parse(localStorage.googleEvents);
-	}
-	else {
-		var googleEvents = [];
-	}
+	var googleEvents = [];
 
-	if(localStorage.date){
-		var date = JSON.parse(localStorage.date);
-	}
-	else {
-		var date = new Date();
-	}
+	var date = new Date();	
 
 	return {
 		all: function(){
