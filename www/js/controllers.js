@@ -42,8 +42,6 @@ angular.module('brainbuild.controllers', [])
   $scope.googleEvents = GoogleEvents.all();
   $scope.date = GoogleEvents.date();
 
-  // mixpanel.track("Practice Button", {email:email});
-
   // date picker object
   var ipObj1 = {
     callback: function (val) {  //Mandatory
