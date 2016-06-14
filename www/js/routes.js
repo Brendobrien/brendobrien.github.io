@@ -61,6 +61,33 @@ angular.module('brainbuild.routes', [])
 		}
 	})
 
+	.state('sidemenu.breakfast', {
+		url: "/breakfast",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/breakfast.html",
+			}
+		}
+	})
+
+	.state('sidemenu.lunch', {
+		url: "/lunch",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/lunch.html",
+			}
+		}
+	})
+
+	.state('sidemenu.dinner', {
+		url: "/dinner",
+		views: {
+			'side-menu-bb': {
+				templateUrl: "templates/dinner.html",
+			}
+		}
+	})
+
 	.state('sidemenu.sleep', {
 		url: "/sleep",
 		views: {
