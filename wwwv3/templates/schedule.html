@@ -1,0 +1,24 @@
+<ion-view hide-back-button="true" hide-back-button="true" id="page1" style="background-color:#FAFAFF;" class=" ">
+    <ion-nav-title padding="true">
+        <button id="mySchedule-button28" style="font-weight:700;" class="button button-dark button-large button-block button-clear" ng-click="openDatePicker()">{{ date | date:'EEE, MMM d, y' }}<i class="icon ion-arrow-down-b" style="margin-left: 5px"></i></button>
+    </ion-nav-title>
+	<ion-content padding="false" class="has-header">        
+            <!-- <div class="spacer" style="width: 297.333px; height: 1.66667px;"></div> -->
+            <div class="" ng-repeat="googleEvent in googleEvents | filter:{visible:true} | orderBy:'timeOfDay'">
+                <div class="item yolo">
+                    <div>
+                        <div>
+                            <div class="bold center title title-margin schedule-text">{{ googleEvent.summary }}</div>
+
+                            <div class="center schedule-text">
+                                {{ googleEvent.start.dateTime | date:'shortTime'}} - {{ googleEvent.end.dateTime | date:'shortTime'}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <a analytics-on="click" analytics-event="{{ googleEvent.type }}" analytics-category="Advice" href="{{ googleEvent.page }}" id="mySchedule-button49" style="border-radius:15px 15px 15px 15px;" class="button button-light button-block icon ion-spoon custom-icon"></a> -->
+                    <div analytics-on="click" analytics-event="{{ googleEvent.type }}" analytics-category="Advice" ng-bind-html="googleEvent.button" class="button-work">
+                    </div ng-bind-html>
+                </div>
+            </div>
+	</ion-content>
+</ion-view>

@@ -1,5 +1,4 @@
-angular.module('brainbuild.controllers', [])
-
+angular.module('starter.controllers', [])
 .controller('LoginCtrl', function($scope, auth, $state, store) {
   function doAuth() {
     auth.signin({
@@ -13,7 +12,7 @@ angular.module('brainbuild.controllers', [])
       store.set('profile', profile);
       store.set('token', idToken);
       store.set('refreshToken', refreshToken);
-      $state.go('sidemenu.schedule');
+      $state.go('editWorkouts');
     }, function(error) {
       console.log("There was an error logging in", error);
     });
@@ -24,10 +23,209 @@ angular.module('brainbuild.controllers', [])
   });
 
   doAuth();
+
+
 })
 
-.controller('SidemenuCtrl', function($scope, auth, store, $state) {
-  // logout
+.controller('newWorkoutCtrl', function($scope, Workouts) {
+  $scope.workoutDefault = Workouts.defaults();
+  $scope.workouts = Workouts.wos();
+
+  console.log($scope.workoutDefault.edit);
+  console.log($scope.workoutDefault.woid);
+
+  if($scope.workoutDefault.edit){
+    $scope.currentWorkout = $scope.workouts[$scope.workoutDefault.woid];
+  }
+  else {
+    $scope.currentWorkout = $scope.workoutDefault;
+
+    $scope.currentWorkout.startTime.setUTCMinutes(0,0,0);
+    $scope.currentWorkout.endTime.setUTCHours($scope.currentWorkout.startTime.getUTCHours()+1);
+    $scope.currentWorkout.endTime.setUTCMinutes(0,0,0);
+  }
+
+  $scope.addWorkout = function(){
+    // Reset Default
+    // $scope.workoutDefault.id = 0;
+    // $scope.workoutDefault.sport = "Baseball";
+    // $scope.workoutDefault.status = "Pre-Season (High Intensity)";
+    // $scope.workoutDefault.startTime = new Date();
+    // $scope.workoutDefault.endTime = new Date();
+    // $scope.workoutDefault.endDate = new Date();
+    // $scope.workoutDefault.repeat = [
+    //   { text: "SUN", checked: false },
+    //   { text: "MON", checked: false },
+    //   { text: "TUE", checked: false },
+    //   { text: "WED", checked: false },
+    //   { text: "THU", checked: false },
+    //   { text: "FRI", checked: false },
+    //   { text: "SAT", checked: false }
+    // ];
+    // $scope.workoutDefault.edit = false;
+    // $scope.workoutDefault.woid = 0;
+    // console.log($scope.currentWorkout);
+
+    if(!$scope.workoutDefault.edit){
+      $scope.currentWorkout.id = $scope.workouts.length;
+      $scope.workouts.push($scope.currentWorkout);
+    }
+  }
+})
+
+.controller('editWorkoutsCtrl', function($scope, $state, Workouts, Events, Meals){
+  $scope.workoutDefault = Workouts.defaults();
+  $scope.workouts = Workouts.wos();
+  $scope.events = Events.all();
+  $scope.meals = Meals.all();
+
+  console.log($scope.workouts);
+
+  $scope.editWorkout = function(workoutId){
+    $scope.workoutDefault.edit = true;
+    $scope.workoutDefault.woid = workoutId;
+    $state.go('newWorkout');
+  }
+
+  $scope.deleteWorkout = function(workoutId){
+    console.log(workoutId);
+    $scope.workouts.splice(workoutId,1);
+    console.log($scope.workouts);
+  }
+
+  $scope.createWorkout = function() {
+    $scope.workoutDefault.edit = false;
+    $state.go('newWorkout');
+  }
+
+  $scope.makeEvents = function(){
+    for(i = 0; i < $scope.workouts.length; i++){
+      parseEvents(i);
+    }
+
+    // $scope.events = $scope.events.concat($scope.meals);
+
+    for(i = 0; i < $scope.events.length; i++){
+      postGAPI(i);
+    }
+  }
+
+  function parseEvents(i){
+    $scope.events[i] = {
+      end: 
+      {
+        dateTime: "",
+        timeZone: "America/New_York"
+      },
+      start: 
+      {
+        dateTime: "",
+        timeZone: "America/New_York"
+      },
+      summary: "",
+      recurrence: [
+      ]
+    };
+
+    $scope.events[i].end.dateTime = $scope.workouts[i].endTime;
+    $scope.events[i].start.dateTime = $scope.workouts[i].startTime;
+    $scope.events[i].summary = $scope.workouts[i].sport + ": " + $scope.workouts[i].status;
+    
+    var endDate = parseEndDate(i);
+
+    $scope.events[i].recurrence[0] = "RRULE:FREQ=WEEKLY;UNTIL="+endDate+";BYDAY="
+    for(j = 0; j < $scope.workouts[i].repeat.length; j++){
+      if($scope.workouts[i].repeat[j].checked){
+        $scope.events[i].recurrence[0] = $scope.events[i].recurrence[0] + $scope.workouts[i].repeat[j].text.substring(0,2)+",";
+      }
+    }    
+  }
+
+  function parseEndDate(i){
+    var yyyy = $scope.workouts[i].endDate.getFullYear();
+    var mm = $scope.workouts[i].endDate.getMonth()+1; //January is 0!
+    var dd = $scope.workouts[i].endDate.getDate();
+    
+    if(dd<10){
+        dd='0'+dd;
+    } 
+    if(mm<10){
+        mm='0'+mm;
+    } 
+
+    return yyyy+mm+dd+"T170000Z";
+    // return "20160701T170000Z";
+  }
+
+  function postGAPI(i) {
+    var yolo = JSON.parse(localStorage.getItem('profile'));
+    var yelo = yolo['identities'][0]['access_token'];
+    console.log($scope.events[i]);
+
+    var header = new Headers();
+    //header.append("Access-Control-Allow-Origin", "*");
+    header.append("Content-Type", "application/json");
+
+    fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token='+yelo, {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify($scope.events[i]),
+    })
+    .then(function(res) {
+        if (res.status === 200) {
+            res.json()
+                .then(function(data) {
+                    console.log(data);
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        } else {
+            console.error(res); // comes back but not HTTP 200
+            res.json()
+                .then(function(data) {
+                    console.log('not 200', data);
+                    $state.go('login');
+                })
+                .catch(function(parseErr) {
+                    console.error(parseErr);
+                });
+        }
+      })
+    .catch(function(err) {
+        console.error('network error');
+    });
+  }
+
+  $scope.getGAPI = function() {
+    // Just call the API as you'd do using $http
+    var yolo = JSON.parse(localStorage.getItem('profile'));
+    var yelo = yolo['identities'][0]['access_token'];
+    console.log(yelo);
+
+    var header = new Headers();
+    header.append("Access-Control-Allow-Origin", "*");
+
+    fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token='+yelo, {
+      method: 'GET',
+      headers: header,
+      mode: 'cors',
+      cache: 'default',
+    })
+    .then(function(res) {
+      console.log("success", res);
+      res.json()
+        .then(function(data) {
+          console.info(data);
+        });
+    })
+    .catch(function(err) {
+      console.error("errored", err);
+    });
+  };
+})
+
+.controller('AccountCtrl', function($scope, auth, store, $state) {
   $scope.logout = function() {
     auth.signout();
     store.remove('token');
@@ -35,371 +233,4 @@ angular.module('brainbuild.controllers', [])
     store.remove('refreshToken');
     $state.go('login', {}, {reload: true});
   };
-})
-
-.controller('ScheduleCtrl', function($scope, $state, GoogleEvents, ionicDatePicker) {
-  // factory retrieval
-  $scope.googleEvents = GoogleEvents.all();
-  $scope.date = GoogleEvents.date();
-
-  // date picker object
-  var ipObj1 = {
-    callback: function (val) {  //Mandatory
-      $scope.date = new Date(val);
-
-      for(var i = 0; i < $scope.googleEvents.length; i++){
-        dayCases($scope.googleEvents, i);
-      }
-
-      localStorage.googleEvents = JSON.stringify($scope.googleEvents);
-    },
-    mondayFirst: false,
-  };
-
-  // date picker function
-  $scope.openDatePicker = function(){
-    ionicDatePicker.openDatePicker(ipObj1);
-  };
-
-  // retrieve google calendar events and post them on the screen
-  getGAPI();
-
-  // calendar list retrieval
-  function getGAPI() {
-    var person = JSON.parse(localStorage.getItem('profile'));
-    var token = person['identities'][0]['access_token'];
-
-    var header = new Headers();
-    header.append("Access-Control-Allow-Origin", "*");
-
-    fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token='+token, {
-      method: 'GET',
-      headers: header,
-      mode: 'cors',
-      cache: 'default',
-    })
-    .then(function(res) {
-      if (res.status === 200) {
-            res.json()
-                .then(function(data) {
-                    findBrainbuild(data);
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        } else {
-            console.error(res); // comes back but not HTTP 200
-            res.json()
-                .then(function(data) {
-                    console.log('not 200', data);
-                    if (data.error.code === 401){
-                      $state.go('login');
-                    }
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        }
-    })
-    .catch(function(err) {
-      console.error("errored", err);
-    });
-  };
-
-  // find (Brainbuild) calendar
-  function findBrainbuild(data) {
-    for(var i = 0; i < data.items.length; i++){
-      var title = data.items[i].summary.toString();
-      var endTitle = title.search("(Brainbuild)");
-
-      if(endTitle >= 0){
-        var calendarId = data.items[i].id;
-      }
-    }
-
-    listBrainbuildEvents(calendarId);
-  }
-
-  // brainbuild calendar events retrieval
-  function listBrainbuildEvents(calendarId){
-    var person = JSON.parse(localStorage.getItem('profile'));
-    var token = person['identities'][0]['access_token'];
-
-    var header = new Headers();
-    header.append("Access-Control-Allow-Origin", "*");
-
-    fetch('https://www.googleapis.com/calendar/v3/calendars/'+calendarId+'/events?access_token='+token, {
-      method: 'GET',
-      headers: header,
-      mode: 'cors',
-      cache: 'default',
-    })
-    .then(function(res) {
-      if (res.status === 200) {
-            res.json()
-                .then(function(data) {
-                    parseEvents(data);
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        } else {
-            console.error(res); // comes back but not HTTP 200
-            res.json()
-                .then(function(data) {
-                    console.log('not 200', data);
-                    if (data.error.code === 401){
-                      $state.go('login');
-                    }
-                })
-                .catch(function(parseErr) {
-                    console.error(parseErr);
-                });
-        }
-    })
-    .catch(function(err) {
-      console.error("errored", err);
-    });
-  }
-
-  // main parsing function
-  function parseEvents(data){
-    // iterate through events
-    for(var i = 0; i < data.items.length; i++){
-      // real event
-      if(data.items[i].summary){
-        // .dayRepeat
-        assignDayRepeat(data, i); 
-
-        // .button
-        assignButton(data, i);
-
-        // .timeOfDay
-        assignTiming(data, i);
-
-        // .visible
-        dayCases(data.items, i);
-      }
-      else {
-        // canceled event
-      }
-    }
-
-    // apply to page
-    $scope.$apply(function(){
-      $scope.googleEvents = data.items;
-      localStorage.googleEvents = JSON.stringify(data.items);
-    });
-  }
-
-  // .dayRepeat for recurring events
-  function assignDayRepeat(data, i){
-    if(data.items[i].recurrence){
-      var dayIndex = data.items[i].recurrence[0].search("BYDAY=")
-
-      if(dayIndex>=0 && dayIndex){
-        data.items[i].dayRepeat = data.items[i].recurrence[0].substring(dayIndex+6);
-      }
-      else{
-        data.items[i].dayRepeat = "";
-      }
-    }
-    else{
-      data.items[i].dayRepeat = "";
-    }
-  }
-
-  // .button for more information
-  function assignButton(data, i){
-    
-    data.items[i].color = '#ffffff';
-    data.items[i].page = '#/sidemenu/schedule';
-    if(data.items[i].summary.search(/practice/i) >= 0 || data.items[i].summary.search(/lift/i) >= 0 || data.items[i].summary.search(/workout/i) >= 0){
-      data.items[i].button = '<a  class="Practice Button" id="mySchedule-button33" style="border-radius:15px 15px 15px 15px;" class="button button-calm button-block button-outline icon ion-waterdrop" href="#/sidemenu/practice"></a>';
-      data.items[i].color = '#4986e7';
-      data.items[i].page = '#/sidemenu/practice';
-      data.items[i].type = 'Practice';
-    }
-
-    if(data.items[i].summary.search(/snack/i) >= 0 || data.items[i].summary.search(/carbohydrate/i) >= 0 || data.items[i].summary.search(/hydrate/i) >= 0){
-      data.items[i].button = '<a class="Snack Button" id="mySchedule-button13" style="border-radius:15px 15px 15px 15px;" class="button button-energized  button-block button-outline icon ion-ios-nutrition" href="#/sidemenu/snack"></a>';
-      data.items[i].color = '#ffb878';
-      data.items[i].page = '#/sidemenu/snack';
-      data.items[i].type = 'Snack';
-     }
-
-    if(data.items[i].summary.search(/recover/i) >= 0){
-      data.items[i].button = '<a class="Recovery Button" id="mySchedule-button30" style="border-radius:15px 15px 15px 15px;" class=" button button-balanced  button-block button-outline icon ion-battery-low " href="#/sidemenu/recovery"></a>';
-      data.items[i].color = '#ffb878';
-      data.items[i].page = '#/sidemenu/recovery';
-      data.items[i].type = 'Recovery';
-    }
-
-    if(data.items[i].summary.search(/sleep/i) >= 0){
-      data.items[i].button = '<a class="Sleep Button" id="mySchedule-button17" style="border-radius:15px 15px 15px 15px;" class=" button button-positive  button-block button-outline icon ion-ios-moon " href="#/sidemenu/sleep"></a>';
-      data.items[i].color = '#e1e1e1';
-      data.items[i].page = '#/sidemenu/sleep';
-      data.items[i].type = 'Sleep';
-    }
-
-    if(data.items[i].summary.search(/breakfast/i) >= 0){
-      data.items[i].button = '<a class="Breakfast Button" id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/breakfast"></a>';
-      data.items[i].color = '#dc2127';
-      data.items[i].page = '#/sidemenu/breakfast';
-      data.items[i].type = 'Breakfast';
-    }
-
-    if(data.items[i].summary.search(/lunch/i) >= 0){
-      data.items[i].button = '<a class="Lunch Button" id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/lunch"></a>';
-      data.items[i].color = '#dc2127';
-      data.items[i].page = '#/sidemenu/lunch';
-      data.items[i].type = 'Lunch';
-    }
-
-    if(data.items[i].summary.search(/dinner/i) >= 0){
-      data.items[i].button = '<a class="Dinner Button" id="mySchedule-button29" style="border-radius:15px 15px 15px 15px;" class="button button-assertive button-block button-outline icon ion-spoon" href="#/sidemenu/dinner"></a>';
-      data.items[i].color = '#dc2127';
-      data.items[i].page = '#/sidemenu/dinner';
-      data.items[i].type = 'Dinner';
-    }
-  }
-
-  // .timeOfDay to order the events properly
-  function assignTiming(data, i){
-    if(data.items[i].start.dateTime){
-      var date = new Date(data.items[i].start.dateTime)
-
-      // this is cool: need a common day to compare these values
-      // so I chose December 20, 1993, my birthday
-      date.setDate(20);
-      date.setMonth(11);
-      date.setYear(1993);
-      date = date.getTime();
-
-      data.items[i].timeOfDay = date;
-    }
-  }
-  
-  // assign visibility based on day of week
-  function dayCases(data, i){
-    if(data[i].recurrence){
-      repeatDays(data,i);
-
-      if(data[i].recurrence[0].search("UNTIL=") >= 0){
-        checkEndDate(data,i);
-      }
-    }
-    else {
-      nonrepeatDays(data,i);
-    }
-  }
-
-  // recurring event visibility
-  function repeatDays(data, i){
-    switch ($scope.date.getDay()) {
-      // 9:00-10:00
-      case 0:
-        if(data[i].recurrence[0].search("BYDAY=SU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          // data[i].visible = false;
-          data[i].visible = false;
-        }
-        break;
-      case 1:
-        if(data[i].dayRepeat.search("MO") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          // data[i].visible = false;
-          data[i].visible = false;
-        }
-        break;
-      case 2:
-        if(data[i].dayRepeat.search("TU") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          // data[i].visible = false;
-          data[i].visible = false;
-        }
-        break;
-      case 3:
-        if(data[i].dayRepeat.search("WE") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          // data[i].visible = false;
-          data[i].visible = false;
-        }
-        break;
-      case 4:
-        if(data[i].dayRepeat.search("TH") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){      
-          data[i].visible = true;
-        }
-        else {
-          data[i].visible = false;
-        }
-        break;
-      case 5:
-        if(data[i].dayRepeat.search("FR") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          data[i].visible = false;
-        }
-        break;
-      case 6:
-        if(data[i].dayRepeat.search("SA") >= 0 || data[i].recurrence[0].search("FREQ=DAILY") >= 0){
-          data[i].visible = true;
-        }
-        else {
-          data[i].visible = false;
-        }
-        break;
-      default:
-        data[i].visible = false;
-    }
-  }
-
-  // recurring events with end dates
-  function checkEndDate(data, i){
-    var until = data[i].recurrence[0].search("UNTIL=");
-    var end = data[i].recurrence[0].substring(until+6, until+14);
-    var endDate = new Date(end.substring(0,4), (end.substring(4,6)-1), (parseInt(end.substring(6,8))+1));
-
-    if(endDate.getTime()<$scope.date.getTime()){
-      data[i].visible = false;
-    }
-  }
-
-  // non-recurring event visibility
-  function nonrepeatDays(data, i){
-    if(data[i].summary){
-      if(data[i].start.toDateStringime){
-        var singleEvent = new Date(data[i].start.dateTime);
-        var day = "inday";
-      }
-      else {
-        var singleEvent = new Date(data[i].end.date);
-        var day = "allday";
-      }
-      if(singleEvent.toDateString()==$scope.date.toDateString()){
-        data[i].visible = true;
-
-        if(day=="allday"){
-          data[i].timeOfDay = 0;
-          data[i].start.dateTime = "All";
-          data[i].end.dateTime = "Day"; 
-        }
-      }
-      else {
-        data[i].visible = false;
-      }
-    }
-    else {
-      data[i].visible = false;
-    }
-  }
-})
+});

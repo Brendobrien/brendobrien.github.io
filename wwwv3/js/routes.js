@@ -66,6 +66,7 @@ angular.module('brainbuild.routes', [])
 		views: {
 			'side-menu-bb': {
 				templateUrl: "templates/breakfast.html",
+				controller: "MealCtrl"
 			}
 		}
 	})
@@ -75,6 +76,7 @@ angular.module('brainbuild.routes', [])
 		views: {
 			'side-menu-bb': {
 				templateUrl: "templates/lunch.html",
+				controller: "MealCtrl"
 			}
 		}
 	})

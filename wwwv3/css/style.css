@@ -1,0 +1,111 @@
+/* Empty. Add your own CSS if you like */
+/*#repeat-day {
+	display: inline;
+}*/
+
+
+.platform-ios .manual-ios-statusbar-padding{
+	padding-top:20px;
+}
+.manual-remove-top-padding{
+	padding-top:0px; 
+}
+.manual-remove-top-padding .scroll{
+	padding-top:0px !important;
+}
+ion-list.manual-list-fullwidth div.list, .list.card.manual-card-fullwidth {
+	margin-left:-10px;
+	margin-right:-10px;
+}
+ion-list.manual-list-fullwidth div.list > .item, .list.card.manual-card-fullwidth > .item {
+	border-radius:0px;
+	border-left:0px;
+	border-right: 0px;
+}
+
+.bold {
+	font-weight: 800;
+}
+
+.center {
+	text-align: center;
+}
+
+.title-margin {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.title {
+	font-size: 18px;
+}
+
+.card-body {
+	margin-left: 12px;
+	margin-right: 12px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.card-bold {
+	font-weight: 600;
+}
+
+body.platform-ios {
+	font-family: Raleway, sans-serif;
+}
+
+.ionic-body.platform-ios {
+	font-family: Raleway, sans-serif;
+}
+
+body.platform-android {
+	font-family: Raleway, sans-serif;
+}
+
+.ionic-body.platform-android {
+	font-family: Raleway, sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6,.tab-item,input,button,select,textarea {
+	font-family: inherit;
+}
+
+.platform-ios .manual-ios-statusbar-padding{
+        padding-top:20px;
+      }
+      .manual-remove-top-padding{
+        padding-top:0px; 
+      }
+      .manual-remove-top-padding .scroll{
+        padding-top:0px !important;
+      }
+      ion-list.manual-list-fullwidth div.list, .list.card.manual-card-fullwidth {
+        margin-left:-10px;
+        margin-right:-10px;
+      }
+      ion-list.manual-list-fullwidth div.list > .item, .list.card.manual-card-fullwidth > .item {
+        border-radius:0px;
+        border-left:0px;
+        border-right: 0px;
+      }
+
+.yolo {
+	/*background-image: url("https://cdn.muscleandstrength.com/sites/all/themes/mnsnew/images/taxonomy/workouts/bicep.jpg");*/
+	background-color: red;
+	background-size: cover;
+	opacity:0.7;
+}
+
+.schedule-text {
+	color: white;
+}
+
+.button-work {
+	border-radius:15px 15px 15px 15px;
+}
+
+.custom-icon {
+  font-size: 64px;
+  color : red !important;
+}
