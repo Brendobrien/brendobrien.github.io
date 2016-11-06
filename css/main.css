@@ -144,6 +144,9 @@ body {width: 92%; margin: 0 auto} /* Center page without wrapper */
   -o-background-size: cover;
   background-size: cover;
 }
+.portfolio-padding {
+  padding-top: 10px;
+}
 .clearfix:after { 
  content: "."; 
  visibility: hidden; 
