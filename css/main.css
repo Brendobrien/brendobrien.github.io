@@ -407,10 +407,12 @@ body {width: 92%; margin: 0 auto} /* Center page without wrapper */
   display: inline-block;
   font-size: 60px;
 }
-.sny-icon-box-mid div{
-  margin: 50px;
+@media (max-width: 767px) {
+  /* CSS that should be displayed if width is equal to or less than 800px goes here */
+  .sny-icon-box-mid div{
+    margin: 50px;
+  }
 }
-
 .sny-icon-content{
   text-align: center;
 }
